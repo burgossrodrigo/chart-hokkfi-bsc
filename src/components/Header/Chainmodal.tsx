@@ -61,11 +61,11 @@ export default function MenuPopupState() {
             </StyledButton>
             <Menu {...bindMenu(popupState)}>
               <StyledMenuItem onClick={popupState.close}>
-                <Link href="https://hokkfi.com">
+                <Link href="https://bsc.hokkfi.com">
                   <img src={binancelogo} width={25} height={25} alt="ether" />
                 </Link>
                 <br />
-                <Link href="https://hokkfi.com">
+                <Link href="https://heco.hokkfi.com">
                   <img src={htlogo} width={25} height={25} alt="ether" />
                 </Link>
               </StyledMenuItem>
