@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { AlertTriangle, X } from 'react-feather'
-import { useURLWarningToggle, useURLWarningVisible } from '../../state/user/hooks'
 import { isMobile } from 'react-device-detect'
+import { useURLWarningToggle, useURLWarningVisible } from '../../state/user/hooks'
 
 const PhishAlert = styled.div<{ isActive: any }>`
   width: 100%;
@@ -30,7 +30,7 @@ export default function URLWarning() {
     <PhishAlert isActive={showURLWarning}>
       <div style={{ display: 'flex' }}>
         <AlertTriangle style={{ marginRight: 6 }} size={12} /> Make sure the URL is
-        <code style={{ padding: '0 4px', display: 'inline', fontWeight: 'bold' }}>hokkfi.com</code>
+        <code style={{ padding: '0 4px', display: 'inline', fontWeight: 'bold' }}>heco.hokkfi.com</code>
       </div>
       <StyledClose size={12} onClick={toggleURLWarning} />
     </PhishAlert>
@@ -38,8 +38,8 @@ export default function URLWarning() {
     <PhishAlert isActive={showURLWarning}>
       <div style={{ display: 'flex' }}>
         <AlertTriangle style={{ marginRight: 6 }} size={12} /> Always make sure the URL is
-        <code style={{ padding: '0 4px', display: 'inline', fontWeight: 'bold' }}>hokkx.finance</code> - bookmark it
-        to be safe.
+        <code style={{ padding: '0 4px', display: 'inline', fontWeight: 'bold' }}>hokkx.finance</code> - bookmark it to
+        be safe.
       </div>
       <StyledClose size={12} onClick={toggleURLWarning} />
     </PhishAlert>

@@ -7,6 +7,7 @@ import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state'
 import styled from 'styled-components'
 import ethereumlogo from '../../assets/images/ethereum-logo.png'
 import binancelogo from '../../assets/images/binancelogo.png'
+import htlogo from '../../assets/images/htlogo.png'
 
 const StyledIcon = styled(Icon)`
   display: flex;
@@ -36,6 +37,11 @@ const StyledChainModal = styled.div`
   margin-right: 5px;
 `
 
+const StyledMenuItem = styled(MenuItem)`
+  display: flex;
+  flex-direction: column;
+`
+
 export default function MenuPopupState() {
   return (
     <StyledChainModal>
@@ -47,18 +53,22 @@ export default function MenuPopupState() {
               {...bindTrigger(popupState)}
               startIcon={
                 <StyledIcon>
-                  <img src={ethereumlogo} alt="bnb" />
+                  <img src={ethereumlogo} alt="ht" />
                 </StyledIcon>
               }
             >
               <StyledSpan />
             </StyledButton>
             <Menu {...bindMenu(popupState)}>
-              <MenuItem onClick={popupState.close}>
-                <Link href="https://bsc.hokkfi.com">
+              <StyledMenuItem onClick={popupState.close}>
+                <Link href="https://hokkfi.com">
                   <img src={binancelogo} width={25} height={25} alt="ether" />
                 </Link>
-              </MenuItem>
+                <br />
+                <Link href="https://hokkfi.com">
+                  <img src={htlogo} width={25} height={25} alt="ether" />
+                </Link>
+              </StyledMenuItem>
             </Menu>
           </>
         )}

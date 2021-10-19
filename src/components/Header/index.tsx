@@ -1,18 +1,18 @@
 // import { ChainId, TokenAmount } from '@uniswap/sdk'
-import { ChainId } from '@uniswap/sdk'
+// import { ChainId } from '@mdex/heco-sdk'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { Text } from 'rebass'
 import { NavLink } from 'react-router-dom'
 import { darken } from 'polished'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
-import Chainmodal from './Chainmodal'
+// import { Link } from 'react-router-dom'
 
 import styled from 'styled-components'
 
 // import Logo from '../../assets/svg/logo.svg'
 // import LogoDark from '../../assets/svg/logo_white.svg'
+import { Moon, Sun } from 'react-feather'
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances } from '../../state/wallet/hooks'
@@ -20,18 +20,19 @@ import { useETHBalances } from '../../state/wallet/hooks'
 // import { CountUp } from 'use-count-up'
 // import { TYPE, ExternalLink } from '../../theme'
 import { ExternalLink } from '../../theme'
+import Chainmodal from './Chainmodal'
 
-import { YellowCard } from '../Card'
-import { Moon, Sun } from 'react-feather'
+// import { YellowCard } from '../Card'
 import Menu from '../Menu'
 
 import Row, { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
-import ClaimModal from '../claim/ClaimModal'
+// import ClaimModal from '../claim/ClaimModal'
 // import { useUserHasAvailableClaim } from '../../state/claim/hooks'
-import Modal from '../Modal'
-import UniBalanceContent from './UniBalanceContent'
-import { ButtonPrimary } from '../../components/Button'
+// import Modal from '../Modal'
+// import UniBalanceContent from './UniBalanceContent'
+// import { ButtonPrimary } from '../../components/Button'
+// import { PIT_SETTINGS } from '../../constants'
 // import usePrevious from '../../hooks/usePrevious'
 
 const HeaderFrame = styled.div`
@@ -154,7 +155,7 @@ const AccountElement = styled.div<{ active: boolean }>`
 //     opacity: 0.9;
 //   }
 // `
-
+/*
 const HideSmall = styled.span`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
@@ -173,7 +174,7 @@ const NetworkCard = styled(YellowCard)`
     flex-shrink: 1;
   `};
 `
-
+*/
 const BalanceText = styled(Text)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display: none;
@@ -204,7 +205,7 @@ const UniIcon = styled.div`
 const activeClassName = 'ACTIVE'
 
 const StyledNavLink = styled(NavLink).attrs({
-  activeClassName
+  activeClassName,
 })`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
@@ -231,7 +232,7 @@ const StyledNavLink = styled(NavLink).attrs({
 `
 
 const StyledExternalLink = styled(ExternalLink).attrs({
-  activeClassName
+  activeClassName,
 })<{ isActive?: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
@@ -289,6 +290,7 @@ export const StyledMenuButton = styled.button`
     stroke: ${({ theme }) => theme.text1};
   }
 `
+/*
 const ResponsiveButtonPrimary = styled(ButtonPrimary)`
   width: fit-content;
   ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -296,15 +298,14 @@ const ResponsiveButtonPrimary = styled(ButtonPrimary)`
   `};
 `
 
-const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
-  [ChainId.RINKEBY]: 'Rinkeby',
-  [ChainId.ROPSTEN]: 'Ropsten',
-  [ChainId.GÖRLI]: 'Görli',
-  [ChainId.KOVAN]: 'Kovan'
-}
 
+const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
+  [ChainId.MAINNET]: ''
+}
+*/
 export default function Header() {
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
+  // const pitSettings = chainId ? PIT_SETTINGS[chainId] : undefined
   const { t } = useTranslation()
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
@@ -315,35 +316,37 @@ export default function Header() {
 
   // const aggregateBalance: TokenAmount | undefined = useAggregateUniBalance()
 
-  const [showUniBalanceModal, setShowUniBalanceModal] = useState(false)
+  // const [showUniBalanceModal, setShowUniBalanceModal] = useState(false)
 
   // const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
   // const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
 
   return (
     <HeaderFrame>
-      <ClaimModal />
-      <Modal isOpen={showUniBalanceModal} onDismiss={() => setShowUniBalanceModal(false)}>
-        <UniBalanceContent setShowUniBalanceModal={setShowUniBalanceModal} />
-      </Modal>
+      {/* <ClaimModal /> */}
+      {/* <Modal isOpen={showUniBalanceModal} onDismiss={() => setShowUniBalanceModal(false)}>
+       <UniBalanceContent setShowUniBalanceModal={setShowUniBalanceModal} />
+      </Modal> */}
       <HeaderRow>
         <Title href=".">
-          <UniIcon>
-          </UniIcon>
+          <UniIcon />
         </Title>
         <HeaderLinks>
           <StyledNavLink as="a" href="https://hokk.finance/" target="_blank">
             Home
           </StyledNavLink>
-          <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
+          <StyledNavLink id="swap-nav-link" to="/swap">
             {t('swap')}
           </StyledNavLink>
-          <StyledExternalLink id={`stake-nav-link`} href={'https://www.dextools.io/app/uniswap/pair-explorer/0x9314941c11d6dee1d7bf93113eb74d4718949f3b'}>
+          <StyledExternalLink
+            id="stake-nav-link"
+            href="https://www.dextools.io/app/uniswap/pair-explorer/0x9314941c11d6dee1d7bf93113eb74d4718949f3b"
+          >
             Chart <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
           <StyledNavLink
-            id={`pool-nav-link`}
-            to={'/pool'}
+            id="pool-nav-link"
+            to="/pool"
             isActive={(match, { pathname }) =>
               Boolean(match) ||
               pathname.startsWith('/add') ||
@@ -354,26 +357,31 @@ export default function Header() {
           >
             {t('pool')}
           </StyledNavLink>
-          <ResponsiveButtonPrimary
+          {/*
+          <StyledNavLink id={`stake-nav-link`} to={`${pitSettings?.path}`}>
+            {pitSettings?.name}
+          </StyledNavLink>
+          <ResponsiveButtonPrimary>
                   id="join-pool-button"
                   as={Link}
                   padding="4px 14px"
                   borderRadius="12px"
             to='/staking'>
-            {t('Staking')}
-          </ResponsiveButtonPrimary>
+            {t('Farming')}
+          </ResponsiveButtonPrimary> */}
         </HeaderLinks>
       </HeaderRow>
       <HeaderControls>
-      <HeaderElement>
-          <Chainmodal />
-        </HeaderElement>        
         <HeaderElement>
+          <Chainmodal />
+        </HeaderElement>
+        <HeaderElement>
+          {/*
           <HideSmall>
             {chainId && NETWORK_LABELS[chainId] && (
               <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
             )}
-          </HideSmall>
+            </HideSmall> */}
           {/* {!availableClaim && aggregateBalance && (
             <KISHUWrapper onClick={() => setShowUniBalanceModal(true)}>
               <KISHUAmount active={!!account && !availableClaim} style={{ pointerEvents: 'auto' }}>
@@ -403,7 +411,7 @@ export default function Header() {
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             {account && userEthBalance ? (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                {userEthBalance?.toSignificant(4)} ETH
+                {userEthBalance?.toSignificant(4)} HT
               </BalanceText>
             ) : null}
             <Web3Status />

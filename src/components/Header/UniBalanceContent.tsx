@@ -1,4 +1,7 @@
-import { ChainId, TokenAmount } from '@uniswap/sdk'
+export {}
+
+/*
+import { ChainId, TokenAmount } from '@mdex/heco-sdk'
 import React from 'react'
 import { X } from 'react-feather'
 import styled from 'styled-components'
@@ -6,7 +9,7 @@ import tokenLogo from '../../assets/images/token-logo.png'
 import { UNI } from '../../constants'
 import { useTotalSupply } from '../../data/TotalSupply'
 import { useActiveWeb3React } from '../../hooks'
-import { useAggregateUniBalance, useTokenBalance } from '../../state/wallet/hooks'
+//import { useAggregateUniBalance, useTokenBalance } from '../../state/wallet/hooks'
 import { ExternalLink, TYPE, UniTokenAnimated } from '../../theme'
 import useUSDCPrice from '../../utils/useUSDCPrice'
 import { AutoColumn } from '../Column'
@@ -35,13 +38,13 @@ const StyledClose = styled(X)`
 
 /**
  * Content for balance stats modal
- */
+
 export default function UniBalanceContent({ setShowUniBalanceModal }: { setShowUniBalanceModal: any }) {
   const { account, chainId } = useActiveWeb3React()
   const uni = chainId ? UNI[chainId] : undefined
 
-  const total = useAggregateUniBalance()
-  const uniBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, uni)
+ // const total = useAggregateUniBalance()
+  //const uniBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, uni)
 
   const totalSupply: TokenAmount | undefined = useTotalSupply(uni)
   const uniPrice = useUSDCPrice(uni)
@@ -64,13 +67,13 @@ export default function UniBalanceContent({ setShowUniBalanceModal }: { setShowU
               <AutoColumn gap="md" justify="center">
                 <UniTokenAnimated width="96px" src={tokenLogo} />{' '}
                 <TYPE.white fontSize={48} fontWeight={600} color="white">
-                  {total?.toFixed(0, { groupSeparator: ',' })} B
+                  { /* total?.toFixed(0, { groupSeparator: ',' })  } B
                 </TYPE.white>
               </AutoColumn>
               <AutoColumn gap="md">
                 <RowBetween>
                   <TYPE.white color="white">Balance:</TYPE.white>
-                  <TYPE.white color="white">{uniBalance?.toFixed(2, { groupSeparator: ',' })} B</TYPE.white>
+                  <TYPE.white color="white">{/*  uniBalance?.toFixed(2, { groupSeparator: ',' })  } B</TYPE.white>
                 </RowBetween>
               </AutoColumn>
             </CardSection>
@@ -86,7 +89,7 @@ export default function UniBalanceContent({ setShowUniBalanceModal }: { setShowU
             {/* <RowBetween>
               <TYPE.white color="white">KISHU in circulation:</TYPE.white>
               <TYPE.white color="white">{circulation?.toFixed(0, { groupSeparator: ',' })}</TYPE.white>
-            </RowBetween> */}
+            </RowBetween> }
             <RowBetween>
               <TYPE.white color="white">Total Supply</TYPE.white>
               <TYPE.white color="white">{totalSupply?.toFixed(0, { groupSeparator: ',' })} B</TYPE.white>
@@ -100,3 +103,4 @@ export default function UniBalanceContent({ setShowUniBalanceModal }: { setShowU
     </ContentWrapper>
   )
 }
+*/

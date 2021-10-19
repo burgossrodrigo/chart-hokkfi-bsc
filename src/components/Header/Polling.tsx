@@ -86,8 +86,8 @@ export default function Polling() {
         clearTimeout(mountingTimer)
       }
     },
-    [blockNumber] //useEffect will run only one time
-    //if you pass a value to array, like this [data] than clearTimeout will run every time this value changes (useEffect re-run)
+    [blockNumber] // useEffect will run only one time
+    // if you pass a value to array, like this [data] than clearTimeout will run every time this value changes (useEffect re-run)
   )
 
   return (
