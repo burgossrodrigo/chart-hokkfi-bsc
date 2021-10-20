@@ -1,10 +1,10 @@
-import { ChainId, JSBI, Percent, Token, WETH } from '@uniswap/sdk'
+import { ChainId, JSBI, Percent, Token, WETH } from '@mdex/bsc-sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 
-import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors'
+import { bsc, injected, portis, walletconnect, walletlink } from '../connectors'
 
-export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
-
+export const ROUTER_ADDRESS = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
+export const FACTORY_ADDRESS = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export { PRELOADED_PROPOSALS } from './proposals'
@@ -14,72 +14,96 @@ type ChainTokenList = {
   readonly [chainId in ChainId]: Token[]
 }
 
-export const AMPL = new Token(ChainId.MAINNET, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth')
-export const DAI = new Token(ChainId.MAINNET, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin')
-export const USDC = new Token(ChainId.MAINNET, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD//C')
-export const USDT = new Token(ChainId.MAINNET, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')
-export const WBTC = new Token(ChainId.MAINNET, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 8, 'WBTC', 'Wrapped BTC')
-export const FEI = new Token(ChainId.MAINNET, '0x956F47F50A910163D8BF957Cf5846D573E7f87CA', 18, 'FEI', 'Fei USD')
-export const TRIBE = new Token(ChainId.MAINNET, '0xc7283b66Eb1EB5FB86327f08e1B5816b0720212B', 18, 'TRIBE', 'Tribe')
-export const FRAX = new Token(ChainId.MAINNET, '0x853d955aCEf822Db058eb8505911ED77F175b99e', 18, 'FRAX', 'Frax')
-export const FXS = new Token(ChainId.MAINNET, '0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0', 18, 'FXS', 'Frax Share')
-export const renBTC = new Token(ChainId.MAINNET, '0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D', 8, 'renBTC', 'renBTC')
+export const HOKK = new Token(ChainId.MAINNET, '0x36a92f809da8c2072b090a9e3322226c5376b207', 18, 'HOKK', 'Hokkaido Inu')
+export const BUSD = new Token(ChainId.MAINNET, '0xe9e7cea3dedca5984780bafc599bd69add087d56', 18, 'BUSD', 'Binance USD')
+export const ETH = new Token(ChainId.MAINNET, '0x2170ed0880ac9a755fd29b2688956bd959f933f8', 18, 'ETH', 'Ethereum Token')
+export const USDC = new Token(
+  ChainId.MAINNET,
+  '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+  18,
+  'USDC',
+  'Binance-Peg USD Coin'
+)
+export const DAI = new Token(ChainId.MAINNET, '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3', 18, 'DAI', 'DAI USD')
+export const USDT = new Token(ChainId.MAINNET, '0x55d398326f99059ff775485246999027b3197955', 18, 'USDT', 'Wrapped USDT')
+export const WBTC = new Token(ChainId.MAINNET, '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 18, 'WBTC', 'Wrapped Bitcoin')
 
 // Block time here is slightly higher (~1s) than average in order to avoid ongoing proposals past the displayed time
 export const AVERAGE_BLOCK_TIME_IN_SECS = 13
 export const PROPOSAL_LENGTH_IN_BLOCKS = 40_320
 export const PROPOSAL_LENGTH_IN_SECS = AVERAGE_BLOCK_TIME_IN_SECS * PROPOSAL_LENGTH_IN_BLOCKS
 
-export const GOVERNANCE_ADDRESS = '0x5e4be8Bc9637f0EAA1A755019e06A68ce081D58F'
+export const GOVERNANCE_ADDRESS = ZERO_ADDRESS
 
-export const TIMELOCK_ADDRESS = '0x1a9C8182C09F50C8318d769245beA52c32BE35BC'
+export const TIMELOCK_ADDRESS = ZERO_ADDRESS
 
 // const UNI_ADDRESS = '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984'
-const UNI_ADDRESS = '0xC40AF1E4fEcFA05Ce6BAb79DcD8B373d2E436c4E'
-export const UNI: { [chainId in ChainId]: Token } = {
-  [ChainId.MAINNET]: new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
-  [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
-  [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
-  [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
-  [ChainId.KOVAN]: new Token(ChainId.KOVAN, UNI_ADDRESS, 18, 'UNI', 'Uniswap')
+const UNI_ADDRESS = '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
+export const UNI = {
+  [ChainId.MAINNET]: new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'CAKE', 'PancakeSwap Token'),
+  [ChainId.TESTNET]: new Token(
+    ChainId.TESTNET,
+    '0xf73d010412fb5835c310728f0ba1b7dfde88379a',
+    18,
+    'CAKE',
+    'PancakeSwap Token Test'
+  ),
 }
+
+export const MASTER_BREEDER: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: ZERO_ADDRESS,
+  [ChainId.TESTNET]: ZERO_ADDRESS,
+}
+
+export const PIT_BREEDER: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: ZERO_ADDRESS,
+  [ChainId.TESTNET]: ZERO_ADDRESS,
+}
+
+/*
+export const PIT: { [chainId in ChainId]: Token } = {
+  [ChainId.MAINNET]: ZERO_ADDRESS,
+  [ChainId.TESTNET]: ZERO_ADDRESS
+
+}
+*/
+
+/*
+export const PIT_SETTINGS: { [chainId in ChainId]: Record<string, string> } = {
+  [ChainId.MAINNET]: { name: '', path: '/' },
+  [ChainId.TESTNET]: { name: '', path: '' },
+
+}
+*/
 
 export const COMMON_CONTRACT_NAMES: { [address: string]: string } = {
   [UNI_ADDRESS]: 'UNI',
   [GOVERNANCE_ADDRESS]: 'Governance',
-  [TIMELOCK_ADDRESS]: 'Timelock'
+  [TIMELOCK_ADDRESS]: 'Timelock',
 }
 
 // TODO: specify merkle distributor for mainnet
 export const MERKLE_DISTRIBUTOR_ADDRESS: { [chainId in ChainId]?: string } = {
-  [ChainId.MAINNET]: '0x090D4613473dEE047c3f2706764f49E0821D256e'
+  [ChainId.MAINNET]: ZERO_ADDRESS,
 }
 
 const WETH_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
-  [ChainId.ROPSTEN]: [WETH[ChainId.ROPSTEN]],
-  [ChainId.RINKEBY]: [WETH[ChainId.RINKEBY]],
-  [ChainId.GÖRLI]: [WETH[ChainId.GÖRLI]],
-  [ChainId.KOVAN]: [WETH[ChainId.KOVAN]]
+  [ChainId.TESTNET]: [WETH[ChainId.TESTNET]],
 }
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT, WBTC]
+  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], USDC],
 }
 
 export const ADDITIONAL_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
   [ChainId.MAINNET]: {
-    '0xA948E86885e12Fb09AfEF8C52142EBDbDf73cD18': [new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'UNI', 'Uniswap')],
-    '0x561a4717537ff4AF5c687328c0f7E90a319705C0': [new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'UNI', 'Uniswap')],
-    [FEI.address]: [TRIBE],
-    [TRIBE.address]: [FEI],
-    [FRAX.address]: [FXS],
-    [FXS.address]: [FRAX],
-    [WBTC.address]: [renBTC],
-    [renBTC.address]: [WBTC]
-  }
+    '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c': [new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'WBNB', 'Wrapped BNB')],
+    [HOKK.address]: [BUSD],
+    [BUSD.address]: [HOKK],
+  },
 }
 
 /**
@@ -87,32 +111,23 @@ export const ADDITIONAL_BASES: { [chainId in ChainId]?: { [tokenAddress: string]
  * tokens.
  */
 export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
-  [ChainId.MAINNET]: {
-    [AMPL.address]: [DAI, WETH[ChainId.MAINNET]]
-  }
+  [ChainId.MAINNET]: {},
 }
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT, WBTC]
+  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], BUSD, HOKK],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT, WBTC]
+  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET]],
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
-  [ChainId.MAINNET]: [
-    [
-      new Token(ChainId.MAINNET, '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643', 8, 'cDAI', 'Compound Dai'),
-      new Token(ChainId.MAINNET, '0x39AA39c021dfbaE8faC545936693aC917d5E7563', 8, 'cUSDC', 'Compound USD Coin')
-    ],
-    [USDC, USDT],
-    [DAI, USDT]
-  ]
+  [ChainId.MAINNET]: [[WETH[ChainId.MAINNET], HOKK]],
 }
 
 export interface WalletInfo {
@@ -135,7 +150,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     description: 'Injected web3 provider.',
     href: null,
     color: '#010101',
-    primary: true
+    primary: true,
   },
   METAMASK: {
     connector: injected,
@@ -143,7 +158,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     iconName: 'metamask.png',
     description: 'Easy-to-use browser extension.',
     href: null,
-    color: '#E8831D'
+    color: '#E8831D',
   },
   WALLET_CONNECT: {
     connector: walletconnect,
@@ -152,7 +167,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
     href: null,
     color: '#4196FC',
-    mobile: true
+    mobile: true,
   },
   WALLET_LINK: {
     connector: walletlink,
@@ -160,7 +175,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     iconName: 'coinbaseWalletIcon.svg',
     description: 'Use Coinbase Wallet app on mobile device',
     href: null,
-    color: '#315CF5'
+    color: '#315CF5',
   },
   COINBASE_LINK: {
     name: 'Open in Coinbase Wallet',
@@ -169,16 +184,16 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     href: 'https://go.cb-w.com/mtUDhEZPy1',
     color: '#315CF5',
     mobile: true,
-    mobileOnly: true
+    mobileOnly: true,
   },
-  FORTMATIC: {
-    connector: fortmatic,
-    name: 'Fortmatic',
-    iconName: 'fortmaticIcon.png',
-    description: 'Login using Fortmatic hosted wallet',
+  BSC_WALLET: {
+    connector: bsc,
+    name: 'BSC Wallet',
+    iconName: 'binancelogo.png',
+    description: 'Login using BSC hosted wallet',
     href: null,
-    color: '#6748FF',
-    mobile: true
+    color: '#FFFF00',
+    mobile: true,
   },
   Portis: {
     connector: portis,
@@ -187,8 +202,8 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     description: 'Login using Portis hosted wallet',
     href: null,
     color: '#4A6C9B',
-    mobile: true
-  }
+    mobile: true,
+  },
 }
 
 export const NetworkContextName = 'NETWORK'
@@ -223,10 +238,5 @@ export const ZERO_PERCENT = new Percent('0')
 export const ONE_HUNDRED_PERCENT = new Percent('1')
 
 // SDN OFAC addresses
-export const BLOCKED_ADDRESSES: string[] = [
-  '0x7F367cC41522cE07553e823bf3be79A889DEbe1B',
-  '0xd882cFc20F52f2599D84b8e8D58C7FB62cfE344b',
-  '0x901bb9583b24D97e995513C6778dc6888AB6870e',
-  '0xA7e5d5A720f06526557c513402f2e6B5fA20b008',
-  '0x8576aCC5C05D6Ce88f4e49bf65BdF0C62F91353C'
-]
+
+export const BLOCKED_ADDRESSES: string[] = []

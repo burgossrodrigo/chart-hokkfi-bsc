@@ -1,12 +1,15 @@
-import { CurrencyAmount, JSBI, Token, Trade } from '@uniswap/sdk'
+import { CurrencyAmount, JSBI, Token, Trade } from '@mdex/bsc-sdk'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ArrowDown } from 'react-feather'
 import ReactGA from 'react-ga'
 import { Text } from 'rebass'
 import styled, { ThemeContext } from 'styled-components'
-//@ts-ignore
-import TradingViewWidget, { Themes } from "react-tradingview-widget";
-import axios from 'axios';
+// @ts-ignore
+//import axios from 'axios'
+import { useIsTransactionUnsupported } from 'hooks/Trades'
+import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
+import { isTradeBetter } from 'utils/trades'
+import { RouteComponentProps } from 'react-router-dom'
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonError, ButtonLight, ButtonPrimary, ButtonConfirmed } from '../../components/Button'
 import Card, { GreyCard } from '../../components/Card'
@@ -26,7 +29,12 @@ import SwapHeader from '../../components/swap/SwapHeader'
 import Logo from '../../assets/images/logomain.png'
 import LogoDark from '../../assets/images/logomain.png'
 
-import { useDarkModeManager } from '../../state/user/hooks'
+import {
+  useDarkModeManager,
+  useExpertModeManager,
+  useUserSlippageTolerance,
+  useUserSingleHopOnly,
+} from '../../state/user/hooks'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
 import { getTradeVersion } from '../../data/V1'
@@ -43,61 +51,43 @@ import {
   useDefaultsFromURLSearch,
   useDerivedSwapInfo,
   useSwapActionHandlers,
-  useSwapState
+  useSwapState,
 } from '../../state/swap/hooks'
-import { useExpertModeManager, useUserSlippageTolerance, useUserSingleHopOnly } from '../../state/user/hooks'
 import { LinkStyledButton, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import AppBody from '../AppBody'
 import { ClickableText } from '../Pool/styleds'
 import Loader from '../../components/Loader'
-import { useIsTransactionUnsupported } from 'hooks/Trades'
-import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
-import { isTradeBetter } from 'utils/trades'
-import { RouteComponentProps } from 'react-router-dom'
 
 const SwapCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  
   -webkit-box-align: center;
   align-items: center;
   overflow: hidden auto;
   z-index: 1;
-
-  width: 30%;
-
+  width: 60%;
+  margin-left: 20%;
   @media (max-width: 768px) {
     width: 100%;
+    margin-left: 37%;
   }
-
 `
 
 const MainWrapper = styled.div`
   width: 100%;
   max-width: 1400px;
   display: flex;
-
   @media (max-width: 768px) {
     flex-wrap: wrap;
+    width: 140vw;
+    margin-right: 48vw;
+}
   }
   
 `
-
-const ChartWrapper = styled.div`
-  max-width: 900px;
-  width: 70%;
-  margin: 0 20px 30px 20px;
-  border: 3px solid #0071bc;
-  min-height: 300px;
-
-  @media (max-width: 768px) {
-    margin: 0 0px 30px 0px;
-    width: 100%;
-  }
-`
-
+/*
 const GasStationsWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -107,14 +97,12 @@ const GasStationsWrapper = styled.div`
   width: 100%;
   padding: 30px;
 `
-
 const GasInfoWrapper = styled.div`
   display: flex;
   padding: 0 15px 30px 15px;
   align-items: center;
   justify-content: center;
 `
-
 const GasAmoundWrapper = styled.div`
   line-height: 50px;
   font-weight: 600;
@@ -123,18 +111,17 @@ const GasAmoundWrapper = styled.div`
   padding-right: 10px;
   border-right: 1px solid #797979;
 `
-
 const GasWaitWrapper = styled.div`
   padding-left: 10px;
   font-size: 18px;
   text-transform: uppercase;
 `
-
 const GasTitle = styled.div`
   font-size: 20px;
   color: ${props => props.color || "#ffffff"};
   margin-top: 30px;
 `
+*/
 
 export default function Swap({ history }: RouteComponentProps) {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -144,7 +131,7 @@ export default function Swap({ history }: RouteComponentProps) {
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
     useCurrency(loadedUrlParams?.inputCurrencyId),
-    useCurrency(loadedUrlParams?.outputCurrencyId)
+    useCurrency(loadedUrlParams?.outputCurrencyId),
   ]
   const [dismissTokenWarning, setDismissTokenWarning] = useState<boolean>(false)
   const urlLoadedTokens: Token[] = useMemo(
@@ -160,7 +147,7 @@ export default function Swap({ history }: RouteComponentProps) {
   const importTokensNotInDefault =
     urlLoadedTokens &&
     urlLoadedTokens.filter((token: Token) => {
-      return !Boolean(token.address in defaultTokens)
+      return !(token.address in defaultTokens)
     })
 
   const { account } = useActiveWeb3React()
@@ -184,7 +171,7 @@ export default function Swap({ history }: RouteComponentProps) {
     currencyBalances,
     parsedAmount,
     currencies,
-    inputError: swapInputError
+    inputError: swapInputError,
   } = useDerivedSwapInfo()
 
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
@@ -197,7 +184,7 @@ export default function Swap({ history }: RouteComponentProps) {
   const toggledVersion = useToggledVersion()
   const tradesByVersion = {
     [Version.v1]: v1Trade,
-    [Version.v2]: v2Trade
+    [Version.v2]: v2Trade,
   }
   const trade = showWrap ? undefined : tradesByVersion[toggledVersion]
   const defaultTrade = showWrap ? undefined : tradesByVersion[DEFAULT_VERSION]
@@ -208,11 +195,11 @@ export default function Swap({ history }: RouteComponentProps) {
   const parsedAmounts = showWrap
     ? {
         [Field.INPUT]: parsedAmount,
-        [Field.OUTPUT]: parsedAmount
+        [Field.OUTPUT]: parsedAmount,
       }
     : {
         [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount
+        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
       }
 
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
@@ -250,14 +237,14 @@ export default function Swap({ history }: RouteComponentProps) {
     tradeToConfirm: undefined,
     attemptingTxn: false,
     swapErrorMessage: undefined,
-    txHash: undefined
+    txHash: undefined,
   })
 
   const formattedAmounts = {
     [independentField]: typedValue,
     [dependentField]: showWrap
       ? parsedAmounts[independentField]?.toExact() ?? ''
-      : parsedAmounts[dependentField]?.toSignificant(6) ?? ''
+      : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
 
   const route = trade?.route
@@ -271,6 +258,7 @@ export default function Swap({ history }: RouteComponentProps) {
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
+  /*
   const [gasInfo, setGasInfo] = useState<any>({
     fastest: 0,
     fastestWait: 0,
@@ -279,6 +267,7 @@ export default function Swap({ history }: RouteComponentProps) {
     safeLow: 0,
     safeLowWait: 0,
   })
+  */
 
   // mark when a user has submitted an approval, reset onTokenSelection for input field
   useEffect(() => {
@@ -287,6 +276,7 @@ export default function Swap({ history }: RouteComponentProps) {
     }
   }, [approval, approvalSubmitted])
 
+  /*
   useEffect(() => {
     const getEtherGasInfo = async () => {
       const { data } = await axios.get<any>('https://ethgasstation.info/json/ethgasAPI.json')
@@ -301,6 +291,7 @@ export default function Swap({ history }: RouteComponentProps) {
     }
     getEtherGasInfo();
   }, []);
+  */
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
@@ -321,7 +312,7 @@ export default function Swap({ history }: RouteComponentProps) {
     }
     setSwapState({ attemptingTxn: true, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: undefined })
     swapCallback()
-      .then(hash => {
+      .then((hash) => {
         setSwapState({ attemptingTxn: false, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: hash })
 
         ReactGA.event({
@@ -335,22 +326,22 @@ export default function Swap({ history }: RouteComponentProps) {
           label: [
             trade?.inputAmount?.currency?.symbol,
             trade?.outputAmount?.currency?.symbol,
-            getTradeVersion(trade)
-          ].join('/')
+            getTradeVersion(trade),
+          ].join('/'),
         })
 
         ReactGA.event({
           category: 'Routing',
-          action: singleHopOnly ? 'Swap with multihop disabled' : 'Swap with multihop enabled'
+          action: singleHopOnly ? 'Swap with multihop disabled' : 'Swap with multihop enabled',
         })
       })
-      .catch(error => {
+      .catch((error) => {
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
           showConfirm,
           swapErrorMessage: error.message,
-          txHash: undefined
+          txHash: undefined,
         })
       })
   }, [
@@ -362,7 +353,7 @@ export default function Swap({ history }: RouteComponentProps) {
     recipientAddress,
     account,
     trade,
-    singleHopOnly
+    singleHopOnly,
   ])
 
   // errors
@@ -393,7 +384,7 @@ export default function Swap({ history }: RouteComponentProps) {
   }, [attemptingTxn, showConfirm, swapErrorMessage, trade, txHash])
 
   const handleInputSelect = useCallback(
-    inputCurrency => {
+    (inputCurrency) => {
       setApprovalSubmitted(false) // reset 2 step UI for approvals
       onCurrencySelection(Field.INPUT, inputCurrency)
     },
@@ -404,20 +395,11 @@ export default function Swap({ history }: RouteComponentProps) {
     maxAmountInput && onUserInput(Field.INPUT, maxAmountInput.toExact())
   }, [maxAmountInput, onUserInput])
 
-  const handleOutputSelect = useCallback(outputCurrency => onCurrencySelection(Field.OUTPUT, outputCurrency), [
-    onCurrencySelection
+  const handleOutputSelect = useCallback((outputCurrency) => onCurrencySelection(Field.OUTPUT, outputCurrency), [
+    onCurrencySelection,
   ])
 
-  
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
-
-  // default to ETHHOKK for now
-  const chartSymbol = currencies?.INPUT && currencies?.OUTPUT ?
-    //@ts-ignore
-    (currencies?.INPUT.symbol + currencies?.OUTPUT.symbol === 'ETHHOKK' ?
-    //@ts-ignore
-      'WETHHOKK' : currencies?.INPUT.symbol + currencies?.OUTPUT.symbol)
-    : "WETHHOKK"
 
   return (
     <>
@@ -427,22 +409,14 @@ export default function Swap({ history }: RouteComponentProps) {
         onConfirm={handleConfirmTokenWarning}
         onDismiss={handleDismissTokenWarning}
       />
-      <SwapPoolTabs active={'swap'} />
-      <img width={'235px'} style={{marginBottom: '15px', marginTop: '-40px'}} src={darkMode ? LogoDark : Logo} alt="logo" />
+      <SwapPoolTabs active="swap" />
+      <img
+        width="235px"
+        style={{ marginBottom: '15px', marginTop: '-40px' }}
+        src={darkMode ? LogoDark : Logo}
+        alt="logo"
+      />
       <MainWrapper>
-        <ChartWrapper>
-          <TradingViewWidget
-            symbol={chartSymbol}
-            theme={darkMode ? Themes.DARK : Themes.LIGHT}
-            interval="D"
-            locale="en"
-            timezone="UTC"
-            hideSideToolbar={true}
-            save_image={false}
-            allow_symbol_change={true}
-            autosize={true}
-          />
-        </ChartWrapper>
         <SwapCardWrapper>
           <AppBody>
             <SwapHeader />
@@ -461,7 +435,7 @@ export default function Swap({ history }: RouteComponentProps) {
                 onDismiss={handleConfirmDismiss}
               />
 
-              <AutoColumn gap={'md'}>
+              <AutoColumn gap="md">
                 <CurrencyInputPanel
                   label={independentField === Field.OUTPUT && !showWrap && trade ? 'From (estimated)' : 'From'}
                   value={formattedAmounts[Field.INPUT]}
@@ -518,7 +492,7 @@ export default function Swap({ history }: RouteComponentProps) {
                 ) : null}
 
                 {showWrap ? null : (
-                  <Card padding={showWrap ? '.25rem 1rem 0 1rem' : '0px'} borderRadius={'20px'}>
+                  <Card padding={showWrap ? '.25rem 1rem 0 1rem' : '0px'} borderRadius="20px">
                     <AutoColumn gap="8px" style={{ padding: '0 16px' }}>
                       {Boolean(trade) && (
                         <RowBetween align="center">
@@ -548,7 +522,7 @@ export default function Swap({ history }: RouteComponentProps) {
               </AutoColumn>
               <BottomGrouping>
                 {swapIsUnsupported ? (
-                  <ButtonPrimary disabled={true}>
+                  <ButtonPrimary disabled>
                     <TYPE.main mb="4px">Unsupported Asset</TYPE.main>
                   </ButtonPrimary>
                 ) : !account ? (
@@ -579,7 +553,7 @@ export default function Swap({ history }: RouteComponentProps) {
                       ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
                         'Approved'
                       ) : (
-                        'Approve ' + currencies[Field.INPUT]?.symbol
+                        `Approve ${currencies[Field.INPUT]?.symbol}`
                       )}
                     </ButtonConfirmed>
                     <ButtonError
@@ -592,7 +566,7 @@ export default function Swap({ history }: RouteComponentProps) {
                             attemptingTxn: false,
                             swapErrorMessage: undefined,
                             showConfirm: true,
-                            txHash: undefined
+                            txHash: undefined,
                           })
                         }
                       }}
@@ -621,7 +595,7 @@ export default function Swap({ history }: RouteComponentProps) {
                           attemptingTxn: false,
                           swapErrorMessage: undefined,
                           showConfirm: true,
-                          txHash: undefined
+                          txHash: undefined,
                         })
                       }
                     }}
@@ -630,11 +604,10 @@ export default function Swap({ history }: RouteComponentProps) {
                     error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
                   >
                     <Text fontSize={20} fontWeight={500}>
-                      {swapInputError
-                        ? swapInputError
-                        : priceImpactSeverity > 3 && !isExpertMode
-                        ? `Price Impact Too High`
-                        : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
+                      {swapInputError ||
+                        (priceImpactSeverity > 3 && !isExpertMode
+                          ? `Price Impact Too High`
+                          : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`)}
                     </Text>
                   </ButtonError>
                 )}
@@ -659,30 +632,6 @@ export default function Swap({ history }: RouteComponentProps) {
           )}
         </SwapCardWrapper>
       </MainWrapper>
-      <GasTitle color={darkMode ? "#fffff" : "#25354E"}>Recommended Gas Prices in Gwei</GasTitle>
-      <GasStationsWrapper>
-        <GasInfoWrapper>
-          <GasAmoundWrapper style={{color: '#FFF'}}>{gasInfo.safeLow}</GasAmoundWrapper>
-          <GasWaitWrapper>
-            <span style={{opacity: 0.8}}>STANDARD</span>
-            <span style={{opacity: 0.4, marginLeft: '5px'}}>&lt; {gasInfo.safeLowWait}m</span>
-          </GasWaitWrapper>
-        </GasInfoWrapper>
-        <GasInfoWrapper>
-          <GasAmoundWrapper style={{color: '#FFF'}}>{gasInfo.fast}</GasAmoundWrapper>
-          <GasWaitWrapper>
-            <span style={{opacity: 0.8}}>FAST</span>
-            <span style={{opacity: 0.4, marginLeft: '5px'}}>&lt; {gasInfo.fastWait}m</span>
-          </GasWaitWrapper>
-        </GasInfoWrapper>
-        <GasInfoWrapper>
-          <GasAmoundWrapper style={{color: '#FFF'}}>{gasInfo.fastest}</GasAmoundWrapper>
-          <GasWaitWrapper>
-            <span style={{opacity: 0.8}}>TRADER</span>
-            <span style={{opacity: 0.4, marginLeft: '5px'}}>&lt; {gasInfo.fastestWait}m</span>
-          </GasWaitWrapper>
-        </GasInfoWrapper>
-      </GasStationsWrapper>
     </>
   )
 }

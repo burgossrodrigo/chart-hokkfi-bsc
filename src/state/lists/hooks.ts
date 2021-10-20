@@ -1,6 +1,6 @@
 import { UNSUPPORTED_LIST_URLS } from './../../constants/lists'
 import DEFAULT_TOKEN_LIST from './../../constants/tokenLists/hokkswap.tokenlist.json'
-import { ChainId, Token } from '@uniswap/sdk'
+import { ChainId, Token } from '@mdex/bsc-sdk'
 import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
@@ -41,10 +41,7 @@ type Mutable<T> = {
  * An empty result, useful as a default.
  */
 const EMPTY_LIST: TokenAddressMap = {
-  [ChainId.KOVAN]: {},
-  [ChainId.RINKEBY]: {},
-  [ChainId.ROPSTEN]: {},
-  [ChainId.GÖRLI]: {},
+  [ChainId.TESTNET]: {},
   [ChainId.MAINNET]: {}
 }
 
@@ -90,11 +87,8 @@ export function useAllLists(): {
 
 function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddressMap {
   return {
-    1: { ...map1[1], ...map2[1] },
-    3: { ...map1[3], ...map2[3] },
-    4: { ...map1[4], ...map2[4] },
-    5: { ...map1[5], ...map2[5] },
-    42: { ...map1[42], ...map2[42] }
+    56: { ...map1[56], ...map2[56] },
+    97: { ...map1[97], ...map2[97] }
   }
 }
 

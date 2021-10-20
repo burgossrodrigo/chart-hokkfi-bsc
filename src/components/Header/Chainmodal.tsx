@@ -53,7 +53,7 @@ export default function MenuPopupState() {
               {...bindTrigger(popupState)}
               startIcon={
                 <StyledIcon>
-                  <img src={ethereumlogo} alt="ht" />
+                  <img src={binancelogo} alt="ht" />
                 </StyledIcon>
               }
             >
@@ -62,7 +62,7 @@ export default function MenuPopupState() {
             <Menu {...bindMenu(popupState)}>
               <StyledMenuItem onClick={popupState.close}>
                 <Link href="https://bsc.hokkfi.com">
-                  <img src={binancelogo} width={25} height={25} alt="ether" />
+                  <img src={ethereumlogo} width={25} height={25} alt="ether" />
                 </Link>
                 <br />
                 <Link href="https://heco.hokkfi.com">

@@ -18,14 +18,8 @@
     "inputs": [
       {
         "components": [
-          {
-            "name": "target",
-            "type": "address"
-          },
-          {
-            "name": "callData",
-            "type": "bytes"
-          }
+          { "name": "target", "type": "address" },
+          { "name": "callData", "type": "bytes" }
         ],
         "name": "calls",
         "type": "tuple[]"

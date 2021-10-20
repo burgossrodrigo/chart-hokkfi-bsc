@@ -1,15 +1,13 @@
-import { ChainId } from '@uniswap/sdk'
+import { ChainId } from '@mdex/bsc-sdk'
 import { FortmaticConnector as FortmaticConnectorCore } from '@web3-react/fortmatic-connector'
 
 export const OVERLAY_READY = 'OVERLAY_READY'
 
-type FormaticSupportedChains = Extract<ChainId, ChainId.MAINNET | ChainId.ROPSTEN | ChainId.RINKEBY | ChainId.KOVAN>
+type FormaticSupportedChains = Extract<ChainId, ChainId.MAINNET | ChainId.TESTNET>
 
 const CHAIN_ID_NETWORK_ARGUMENT: { readonly [chainId in FormaticSupportedChains]: string | undefined } = {
   [ChainId.MAINNET]: undefined,
-  [ChainId.ROPSTEN]: 'ropsten',
-  [ChainId.RINKEBY]: 'rinkeby',
-  [ChainId.KOVAN]: 'kovan'
+  [ChainId.TESTNET]: 'testnet.',
 }
 
 export class FortmaticConnector extends FortmaticConnectorCore {
@@ -27,7 +25,7 @@ export class FortmaticConnector extends FortmaticConnectorCore {
 
     const provider = this.fortmatic.getProvider()
 
-    const pollForOverlayReady = new Promise(resolve => {
+    const pollForOverlayReady: Promise<void> = new Promise((resolve) => {
       const interval = setInterval(() => {
         if (provider.overlayReady) {
           clearInterval(interval)
@@ -39,7 +37,7 @@ export class FortmaticConnector extends FortmaticConnectorCore {
 
     const [account] = await Promise.all([
       provider.enable().then((accounts: string[]) => accounts[0]),
-      pollForOverlayReady
+      pollForOverlayReady,
     ])
 
     return { provider: this.fortmatic.getProvider(), chainId: (this as any).chainId, account }
