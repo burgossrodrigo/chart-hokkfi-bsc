@@ -1,4 +1,4 @@
-import { Currency, currencyEquals, ETHER, WETH } from '@mdex/bsc-sdk'
+import { Currency, currencyEquals, ETHER, WETH } from '@hokk/bsc-sdk'
 import { useMemo } from 'react'
 import { tryParseAmount } from '../state/swap/hooks'
 import { useTransactionAdder } from '../state/transactions/hooks'

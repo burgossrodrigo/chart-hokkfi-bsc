@@ -1,4 +1,4 @@
-import { Trade, TradeType } from '@mdex/bsc-sdk'
+import { Trade, TradeType } from '@hokk/bsc-sdk'
 import React, { useContext, useMemo, useState } from 'react'
 import { Repeat } from 'react-feather'
 import { Text } from 'rebass'

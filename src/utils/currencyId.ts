@@ -1,4 +1,4 @@
-import { Currency, ETHER, Token } from '@mdex/bsc-sdk'
+import { Currency, ETHER, Token } from '@hokk/bsc-sdk'
 
 export function currencyId(currency: Currency): string {
   if (currency === ETHER) return 'ETH'

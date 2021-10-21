@@ -1,4 +1,4 @@
-import { ChainId, Token } from '@mdex/bsc-sdk'
+import { ChainId, Token } from '@hokk/bsc-sdk'
 import getTokenWithDefault from './getTokenWithDefault'
 import { ZERO_ADDRESS } from '../constants/index'
 

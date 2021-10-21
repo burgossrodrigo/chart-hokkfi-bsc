@@ -1,4 +1,4 @@
-import { ChainId, JSBI, Token, TokenAmount } from '@mdex/bsc-sdk'
+import { ChainId, JSBI, Token, TokenAmount } from '@hokk/bsc-sdk'
 import { BigNumber } from 'ethers'
 import { ZERO_ADDRESS } from '../constants'
 import { computeUniCirculation } from './computeUniCirculation'

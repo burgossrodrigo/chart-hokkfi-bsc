@@ -1,4 +1,4 @@
-// import { ChainId, TokenAmount } from '@mdex/bsc-sdk'
+// import { ChainId, TokenAmount } from '@hokk/bsc-sdk'
 // import { ChainId } from '@mdex/heco-sdk'
 
 import React from 'react'

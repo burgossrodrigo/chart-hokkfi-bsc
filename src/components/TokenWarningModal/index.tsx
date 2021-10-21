@@ -1,4 +1,4 @@
-import { Token } from '@mdex/bsc-sdk'
+import { Token } from '@hokk/bsc-sdk'
 import React from 'react'
 import Modal from '../Modal'
 import { ImportToken } from 'components/SearchModal/ImportToken'

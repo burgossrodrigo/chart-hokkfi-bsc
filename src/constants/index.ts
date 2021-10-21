@@ -1,11 +1,11 @@
-import { ChainId, JSBI, Percent, Token, WETH } from '@mdex/bsc-sdk'
+import { ChainId, JSBI, Percent, Token, WETH } from '@hokk/bsc-sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 
 import { bsc, injected, portis, walletconnect, walletlink } from '../connectors'
 
 export const ROUTER_ADDRESS = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
 export const FACTORY_ADDRESS = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
-export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+export const ZERO_ADDRESS = '0x000000000000000000000000000000000000dead'
 
 export { PRELOADED_PROPOSALS } from './proposals'
 

@@ -1,4 +1,4 @@
-import { JSBI, Token, TokenAmount } from '@mdex/bsc-sdk'
+import { JSBI, Token, TokenAmount } from '@hokk/bsc-sdk'
 import { BigNumber } from 'ethers'
 import { STAKING_GENESIS } from '../state/stake/hooks'
 

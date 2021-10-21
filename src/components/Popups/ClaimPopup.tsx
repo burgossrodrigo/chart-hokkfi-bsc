@@ -1,4 +1,4 @@
-import { TokenAmount } from '@mdex/bsc-sdk'
+import { TokenAmount } from '@hokk/bsc-sdk'
 import React, { useEffect } from 'react'
 import { X } from 'react-feather'
 import styled, { keyframes } from 'styled-components'

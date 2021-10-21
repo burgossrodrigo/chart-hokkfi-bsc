@@ -1952,6 +1952,18 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
+"@hokk/bsc-sdk@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@hokk/bsc-sdk/-/bsc-sdk-1.0.0.tgz#173af77270c2eb78d95f38546fc99565980f0fa1"
+  integrity sha512-7Yx9TufEdJF0eh61UumOGoSWYIZVORdBvW1GsTOB9h63DYPC9smbCHwg7oW2YSytORScaKhgEiweBBEy4xBRkA==
+  dependencies:
+    big.js "^5.2.2"
+    decimal.js-light "^2.5.0"
+    jsbi "^3.1.1"
+    tiny-invariant "^1.1.0"
+    tiny-warning "^1.0.3"
+    toformat "^2.0.0"
+
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-24.9.0.tgz#79b1bc06fb74a8cfb01cbdedf945584b1b9707f0"

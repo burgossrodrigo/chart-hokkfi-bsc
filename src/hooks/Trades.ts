@@ -1,5 +1,5 @@
 import { isTradeBetter } from 'utils/trades'
-import { Currency, CurrencyAmount, Pair, Token, Trade } from '@mdex/bsc-sdk'
+import { Currency, CurrencyAmount, Pair, Token, Trade } from '@hokk/bsc-sdk'
 import flatMap from 'lodash.flatmap'
 import { useMemo } from 'react'
 

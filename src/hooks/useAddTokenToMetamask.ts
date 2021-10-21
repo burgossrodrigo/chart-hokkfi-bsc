@@ -1,6 +1,6 @@
 import { getTokenLogoURL } from './../components/CurrencyLogo/index'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
-import { Currency, Token } from '@mdex/bsc-sdk'
+import { Currency, Token } from '@hokk/bsc-sdk'
 import { useCallback, useState } from 'react'
 import { useActiveWeb3React } from 'hooks'
 

@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react'
-import { Token } from '@mdex/bsc-sdk'
+import { Token } from '@hokk/bsc-sdk'
 import { AutoRow, RowFixed } from 'components/Row'
 import { AutoColumn } from 'components/Column'
 import CurrencyLogo from 'components/CurrencyLogo'

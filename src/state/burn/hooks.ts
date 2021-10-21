@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, Pair, Percent, TokenAmount } from '@mdex/bsc-sdk'
+import { Currency, CurrencyAmount, JSBI, Pair, Percent, TokenAmount } from '@hokk/bsc-sdk'
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { usePair } from '../../data/Reserves'

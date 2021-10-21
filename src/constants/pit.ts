@@ -1,4 +1,4 @@
-import { ChainId, Token } from '@mdex/bsc-sdk'
+import { ChainId, Token } from '@hokk/bsc-sdk'
 import getPairTokensWithDefaults from '../utils/getPairTokensWithDefaults'
 
 export const PIT_POOLS: {

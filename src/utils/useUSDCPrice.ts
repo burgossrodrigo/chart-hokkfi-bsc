@@ -1,4 +1,4 @@
-import { ChainId, Currency, currencyEquals, JSBI, Price, WETH } from '@mdex/bsc-sdk'
+import { ChainId, Currency, currencyEquals, JSBI, Price, WETH } from '@hokk/bsc-sdk'
 import { useMemo } from 'react'
 import { USDC } from '../constants'
 import { PairState, usePairs } from '../data/Reserves'

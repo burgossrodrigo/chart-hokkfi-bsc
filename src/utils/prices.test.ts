@@ -1,4 +1,4 @@
-import { ChainId, JSBI, Pair, Route, Token, TokenAmount, Trade, TradeType } from '@mdex/bsc-sdk'
+import { ChainId, JSBI, Pair, Route, Token, TokenAmount, Trade, TradeType } from '@hokk/bsc-sdk'
 import { computeTradePriceBreakdown } from './prices'
 
 describe('prices', () => {

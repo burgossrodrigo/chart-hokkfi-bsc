@@ -1,4 +1,4 @@
-import { Currency, Pair } from '@mdex/bsc-sdk'
+import { Currency, Pair } from '@hokk/bsc-sdk'
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished'

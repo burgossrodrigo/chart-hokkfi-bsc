@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { AddressZero } from '@ethersproject/constants'
-import { TokenAmount, Token, ChainId, Percent, JSBI } from '@mdex/bsc-sdk'
+import { TokenAmount, Token, ChainId, Percent, JSBI } from '@hokk/bsc-sdk'
 
 import {
   getEtherscanLink,

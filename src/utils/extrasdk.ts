@@ -1,4 +1,4 @@
-import { ChainId, Token } from '@mdex/bsc-sdk'
+import { ChainId, Token } from '@hokk/bsc-sdk'
 import DEFAULT_TOKEN_LIST from '../constants/tokenLists/hokkswap.tokenlist.json'
 
 export interface TokenListToken {
