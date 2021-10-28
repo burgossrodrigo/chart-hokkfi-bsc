@@ -10,7 +10,7 @@ import { NetworkConnector } from './NetworkConnector'
 import UNISWAP_LOGO_URL from '../assets/svg/logo.svg'
 
 const NETWORK_URL =
-  process.env.NETWORK_URL || 'https://bsc.getblock.io/mainnet/?api_key=fae4da05-f980-4b62-8395-8cb6e3861b0c'
+  process.env.NETWORK_URL || 'https://bsc-dataseed.binance.org/'
 // const FORMATIC_KEY = process.env.REACT_APP_FORTMATIC_KEY
 const PORTIS_ID = process.env.REACT_APP_PORTIS_ID
 // const WALLETCONNECT_BRIDGE_URL = process.env.REACT_APP_WALLETCONNECT_BRIDGE_URL

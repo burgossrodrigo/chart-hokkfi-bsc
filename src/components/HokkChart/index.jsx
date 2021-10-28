@@ -3,6 +3,7 @@ import React from 'react';
 import { gql, useQuery  } from '@apollo/client';
 import { CircularProgress } from '@mui/material';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
+import Grid from '@mui/material/Grid';
 //import styled from 'styled-components'
 /*
 const StyledChart = styled.div`
@@ -71,12 +72,20 @@ const HokkChart = () =>{
   
   return (
           
-      <>
-          <ResponsiveContainer width='100%' height={400} >
-              <AreaChart data={changedData}>
-                  <Area dataKey="value" />
-              </AreaChart>
-          </ResponsiveContainer>
+      <>   <Grid conteiner>
+            <Grid conteiner>
+                <Grid item>
+                    HOKK / USDC    
+                </Grid>
+            </Grid>
+            <Grid item> 
+                <ResponsiveContainer width='100%' height={400} >    
+                    <AreaChart data={changedData} >
+                        <Area dataKey="value" />
+                    </AreaChart>
+                </ResponsiveContainer>
+            </Grid>
+          </Grid>
       </>
       
   

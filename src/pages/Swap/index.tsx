@@ -95,10 +95,9 @@ const MainWrapper = styled.div`
 `
 const ChartWrapper = styled.div`
   max-width: 900px;
-  width: 70%;
+  width: 90%;
   margin: 0 20px 30px 20px;
-  border: 3px solid #0071bc;
-  min-height: 300px;
+  min-height: 600px;
   @media (max-width: 768px) {
     margin: 0 0px 30px 0px;
     width: 100%;
@@ -422,7 +421,7 @@ export default function Swap({ history }: RouteComponentProps) {
 
   //@ts-ignore
   const output: string = currencies?.OUTPUT ? currencies?.OUTPUT.address : '0x36a92f809da8c2072b090a9e3322226c5376b207'
-
+  //stores value in output conditionally without hooks
 
 console.log(output)
 
@@ -494,19 +493,11 @@ data.ethereum.dexTrades.map((chart_: { timeInterval: { minute: any }; maximum_pr
 
 if(output !== '0x36a92f809da8c2072b090a9e3322226c5376b207'){
 
-  /****************** */
-
-
-
-
-
-
-  /****************** */
 
 return (
 
   <>
-  <ResponsiveContainer width='100%' height={400} >
+  <ResponsiveContainer width='100%' height={800} >
       <AreaChart data={changedData}>
           <Area dataKey="value" />
           <XAxis dataKey="time" />
@@ -536,7 +527,7 @@ return (
       />
       <SwapPoolTabs active="swap" />
       <img
-        width="235px"
+        width="1PX"
         style={{ marginBottom: '15px', marginTop: '-40px' }}
         src={darkMode ? LogoDark : Logo}
         alt="logo"
