@@ -242,5 +242,6 @@ body {
       1,
       theme.bg1
     )} 100%)`};
+    background-size: cover;
 }
 `
