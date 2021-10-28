@@ -18,7 +18,7 @@ const StyledIcon = styled(Icon)`
 
 const StyledButton = styled(Button)`
 width: auto;
-background-color: background-color: ${({ theme }) => theme.bg1};
+background-color: background-color: black;
 font-family: 'Arial', sans-serif;
 border-radius: 5px 5px 5px 5px;
 @media (max-width: 768px) {
