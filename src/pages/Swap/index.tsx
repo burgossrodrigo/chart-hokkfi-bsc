@@ -28,6 +28,13 @@ import ProgressSteps from '../../components/ProgressSteps'
 import SwapHeader from '../../components/swap/SwapHeader'
 import Logo from '../../assets/images/logomain.png'
 import LogoDark from '../../assets/images/logomain.png'
+import HokkChart from '../../components/HokkChart'
+//import Chart from '../../components/Bitquery'
+
+import { gql, useQuery } from '@apollo/client';
+import { CircularProgress } from '@mui/material';
+import { AreaChart, Area, ResponsiveContainer, XAxis } from 'recharts';
+
 
 import {
   useDarkModeManager,
@@ -68,7 +75,6 @@ const SwapCardWrapper = styled.div`
   overflow: hidden auto;
   z-index: 1;
   width: 60%;
-  margin-left: 20%;
   @media (max-width: 768px) {
     width: 100%;
     margin-left: 37%;
@@ -86,6 +92,17 @@ const MainWrapper = styled.div`
 }
   }
   
+`
+const ChartWrapper = styled.div`
+  max-width: 900px;
+  width: 70%;
+  margin: 0 20px 30px 20px;
+  border: 3px solid #0071bc;
+  min-height: 300px;
+  @media (max-width: 768px) {
+    margin: 0 0px 30px 0px;
+    width: 100%;
+  }
 `
 /*
 const GasStationsWrapper = styled.div`
@@ -293,6 +310,8 @@ export default function Swap({ history }: RouteComponentProps) {
   }, []);
   */
 
+  //const output = currencies?.OUTPUT
+
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
@@ -401,6 +420,112 @@ export default function Swap({ history }: RouteComponentProps) {
 
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
+  //@ts-ignore
+  const output: string = currencies?.OUTPUT ? currencies?.OUTPUT.address : '0x36a92f809da8c2072b090a9e3322226c5376b207'
+
+
+console.log(output)
+
+
+  /* CHART ############################################# CHART */
+  //@ts-ignore
+
+  //@ts-ignore
+
+
+//BUSD / BNB
+
+
+
+
+
+ const CHART_DATA =  gql`
+  query chart{
+ethereum(network: bsc) {
+dexTrades(
+options: {limit: 10000, asc: "timeInterval.hour"}
+date: {since: "2021-01-01"}
+exchangeName: {in:["Pancake","Pancake v2"]}
+baseCurrency: {is: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"}
+quoteCurrency: {is: "${output}"}
+) {
+timeInterval {
+  hour(count: 10)
+}
+baseCurrency {
+  symbol
+  address
+}
+baseAmount
+quoteCurrency {
+  symbol
+  address
+}
+quoteAmount
+trades: count
+quotePrice
+maximum_price: quotePrice(calculate: maximum)
+minimum_price: quotePrice(calculate: minimum)
+open_price: minimum(of: block, get: quote_price)
+close_price: maximum(of: block, get: quote_price)
+}
+}
+}
+`;
+//@ts-ignore
+const { loading, data } =  useQuery(CHART_DATA)
+
+const PrepareChart = () => {
+  
+let changedData: { time: any; value: number }[] = [];
+
+if(loading && Field.OUTPUT !== undefined)
+return < CircularProgress />
+
+
+data.ethereum.dexTrades.map((chart_: { timeInterval: { minute: any }; maximum_price: number }) => {
+  changedData.push({
+    time: chart_.timeInterval.minute,
+    value: chart_.maximum_price*Math.pow(10,12)
+  });
+
+  return changedData;
+})
+
+if(output !== '0x36a92f809da8c2072b090a9e3322226c5376b207'){
+
+  /****************** */
+
+
+
+
+
+
+  /****************** */
+
+return (
+
+  <>
+  <ResponsiveContainer width='100%' height={400} >
+      <AreaChart data={changedData}>
+          <Area dataKey="value" />
+          <XAxis dataKey="time" />
+      </AreaChart>
+  </ResponsiveContainer>
+</>
+)
+
+}else{
+
+ return (<><HokkChart /></>)
+
+
+}
+
+}
+/* #################################################################### */
+
+
   return (
     <>
       <TokenWarningModal
@@ -416,7 +541,10 @@ export default function Swap({ history }: RouteComponentProps) {
         src={darkMode ? LogoDark : Logo}
         alt="logo"
       />
-      <MainWrapper>
+      <MainWrapper> 
+          <ChartWrapper>
+            <PrepareChart />
+          </ChartWrapper>
         <SwapCardWrapper>
           <AppBody>
             <SwapHeader />

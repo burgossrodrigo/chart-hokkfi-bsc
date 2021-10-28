@@ -31,6 +31,7 @@ import { OpenClaimAddressModalAndRedirectToSwap, RedirectPathToSwapOnly, Redirec
 import Vote from './Vote'
 import VotePage from './Vote/VotePage'
 
+
 const AppWrapper = styled.div`
   display: flex;
   flex-flow: column;
