@@ -38,7 +38,6 @@ import { AreaChart, Area, ResponsiveContainer, XAxis } from 'recharts';
 // MUI IMPORTS
 
 
-
 import {
   useDarkModeManager,
   useExpertModeManager,
@@ -106,6 +105,10 @@ const ChartWrapper = styled.div`
     width: 100%;
   }
 `
+
+
+
+
 /*
 const GasStationsWrapper = styled.div`
   display: flex;
@@ -539,6 +542,7 @@ return (
           <ChartWrapper>
             <PrepareChart />
           </ChartWrapper>
+          
         <SwapCardWrapper>
           <AppBody>
             <SwapHeader />
