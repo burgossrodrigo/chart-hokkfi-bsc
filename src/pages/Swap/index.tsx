@@ -475,7 +475,7 @@ useEffect(() => {
 ethereum(network: bsc) {
 dexTrades(
 options: {limit: 1000, asc: "timeInterval.minute"}
-date: {since: "2021-04-27"}
+date: {since: "2021-10-29"}
 exchangeName: {in:["Pancake","Pancake v2"]}
 baseCurrency: {is: "${output}"}
 quoteCurrency: {is: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"}
@@ -533,7 +533,7 @@ return (
           <b>{symbol}</b> / USDC    
           <h2>$ {Number(tokenPrice).toFixed(13)}</h2>
 
-          <ResponsiveContainer width='100%' height={800} >
+          <ResponsiveContainer width='100%' height={600} >
       <AreaChart data={changedData}>
           <Area dataKey="value" />
           <XAxis dataKey="time" />
