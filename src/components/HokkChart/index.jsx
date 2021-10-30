@@ -36,14 +36,16 @@ const UsdcLogo = styled.img`
 
 const HokkChart = () =>{
 
-  const cardinal = curveCardinal.tension(0.2);
+  const cardinal = curveCardinal.tension(1);
 
 const [bnbData, setBnbData] = useState({})
+const [usdcPrice, setUsdcPrice] = useState();
+
 
 
 useEffect(() => {
   // GET request using fetch inside useEffect React hook
-  fetch('https://api.pancakeswap.info/api/v2/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c')
+  fetch('https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT', {cache: "force-cache"})
       .then(response => response.json())
       .then(fetchData => setBnbData(fetchData));
 
@@ -57,8 +59,8 @@ dexTrades(
 options: {limit: 1000, asc: "timeInterval.minute"}
 date: {since: "2021-04-27"}
 exchangeName: {in:["Pancake","Pancake v2"]}
-baseCurrency: {is: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"}
-quoteCurrency: {is: "0x36a92f809da8c2072b090a9e3322226c5376b207"}
+baseCurrency: {is: "0x36a92f809da8c2072b090a9e3322226c5376b207"}
+quoteCurrency: {is: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"}
 ) {
 timeInterval {
   minute(count: 5)
@@ -87,26 +89,32 @@ close_price: maximum(of: block, get: quote_price)
   const { loading, data } = useQuery(CHART_DATA);
   
   let changedData = [];
+
+  
   
 
   
-  if (loading){ 
+  while (loading || bnbData === undefined)
   
   return < CircularProgress />
 
-  }else{
 
 
-  data.ethereum.dexTrades.map((chart_) => {
+  data.ethereum.dexTrades.map(chart_ => {
+
+    const usdPrice = bnbData.price
+    const time = chart_.timeInterval.minute;
+    const price = chart_.maximum_price * Math.pow(10,2) * usdPrice;
+
     changedData.push({
-      time: chart_.timeInterval.minute,
-      price: chart_.maximum_price*Math.pow(10,2) * bnbData.data.price
+      time: time,
+      price: price
     });
 
     return changedData;
-});
 
-  console.log(typeof changedData)
+    
+});
   
   return (
           
@@ -138,9 +146,9 @@ close_price: maximum(of: block, get: quote_price)
       
   
       );
-    }
-}
 
+
+}
 
 
 export default HokkChart;
