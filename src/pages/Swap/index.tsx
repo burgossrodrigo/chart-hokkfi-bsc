@@ -34,9 +34,9 @@ import HokkChart from '../../components/HokkChart'
 import { gql, useQuery } from '@apollo/client';
 import { CircularProgress } from '@mui/material';
 import { AreaChart, Area, ResponsiveContainer, XAxis } from 'recharts';
+//import { curveCardinal } from 'd3-shape';
 
 // MUI IMPORTS
-
 
 import {
   useDarkModeManager,
@@ -427,6 +427,11 @@ export default function Swap({ history }: RouteComponentProps) {
 
   //@ts-ignore
   const output: string = currencies?.OUTPUT ? currencies?.OUTPUT.address : '0x36a92f809da8c2072b090a9e3322226c5376b207'
+  //@ts-ignore
+  const symbol: string = currencies?.OUTPUT ? currencies?.OUTPUT.symbol : 'TOKEN'
+
+  //const cardinal = curveCardinal.tension(0.01);
+  
   //stores value in output conditionally without hooks
 
 console.log(output)
@@ -440,22 +445,43 @@ console.log(output)
 
 //BUSD / BNB
 
+const [bnbData, setBnbData] = useState({});
+const [tokenPrice, setTokenPrice] = useState();
 
+useEffect(() => {
+  // GET request using fetch inside useEffect React hook
+  fetch('https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT', {cache: "force-cache"})
+      .then(response => response.json())
+      .then(fetchData => setBnbData(fetchData));
 
+// empty dependency array means this effect will only run once (like componentDidMount in classes)
+}, []);
+
+useEffect(() => {
+
+  // GET request using fetch inside useEffect React hook
+  fetch(`https://api.pancakeswap.info/api/v2/tokens/${output}`, {cache: "force-cache"})
+      .then(response => response.json())
+      .then(fetchData => setTokenPrice(fetchData.data.price));
+
+      console.log(tokenPrice);
+
+// empty dependency array means this effect will only run once (like componentDidMount in classes)
+});
 
 
  const CHART_DATA =  gql`
   query chart{
 ethereum(network: bsc) {
 dexTrades(
-options: {limit: 10000, asc: "timeInterval.hour"}
-date: {since: "2021-01-01"}
+options: {limit: 1000, asc: "timeInterval.minute"}
+date: {since: "2021-04-27"}
 exchangeName: {in:["Pancake","Pancake v2"]}
-baseCurrency: {is: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"}
-quoteCurrency: {is: "${output}"}
+baseCurrency: {is: "${output}"}
+quoteCurrency: {is: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"}
 ) {
 timeInterval {
-  hour(count: 10)
+  minute(count: 5)
 }
 baseCurrency {
   symbol
@@ -477,6 +503,7 @@ close_price: maximum(of: block, get: quote_price)
 }
 }
 `;
+
 //@ts-ignore
 const { loading, data } =  useQuery(CHART_DATA)
 
@@ -502,8 +529,11 @@ if(output !== '0x36a92f809da8c2072b090a9e3322226c5376b207'){
 
 return (
 
-  <>
-  <ResponsiveContainer width='100%' height={800} >
+  <>   
+          <b>{symbol}</b> / USDC    
+          <h2>$ {Number(tokenPrice).toFixed(13)}</h2>
+
+          <ResponsiveContainer width='100%' height={800} >
       <AreaChart data={changedData}>
           <Area dataKey="value" />
           <XAxis dataKey="time" />
