@@ -535,7 +535,7 @@ return (
           <b>{symbol}</b> / USDC    
           <h2>$ {Number(tokenPrice).toFixed(13)}</h2>
 
-          <ResponsiveContainer width='100%' height={600} >
+          <ResponsiveContainer width='100%' height={400} >
       <AreaChart data={changedData}>
           <Area dataKey="value" />
           <XAxis dataKey="time" />
