@@ -8,38 +8,14 @@ import hokklogo from '../../assets/images/hokklogo.png';
 import usdclogo from '../../assets/images/usdclogo.png';
 import styled from 'styled-components';
 import { curveCardinal } from 'd3-shape';
-
-const TokenLogoWrapper = styled.div`
-
-    display: flex;
-    flex-direction: row;
-
-`
-
-const TokenLogo = styled.img`
-
-    width: 45px;
-    height 45px;
-
-`
-
-const UsdcLogo = styled.img`
-
-    width: 45px;
-    height 45px;
-    right: 2vw;
-
-`
-
-
-
+import { Typography } from '@mui/material';
 
 const HokkChart = () =>{
 
-  const cardinal = curveCardinal.tension(1);
+  const cardinal = curveCardinal.tension(0.01);
 
-const [bnbData, setBnbData] = useState({})
-const [usdcPrice, setUsdcPrice] = useState();
+const [bnbData, setBnbData] = useState({});
+const [hokkPrice, setHokkPrice] = useState();
 
 
 
@@ -48,6 +24,15 @@ useEffect(() => {
   fetch('https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT', {cache: "force-cache"})
       .then(response => response.json())
       .then(fetchData => setBnbData(fetchData));
+
+// empty dependency array means this effect will only run once (like componentDidMount in classes)
+}, []);
+
+useEffect(() => {
+  // GET request using fetch inside useEffect React hook
+  fetch('https://api.pancakeswap.info/api/v2/tokens/0x36a92f809da8c2072b090a9e3322226c5376b207', {cache: "force-cache"})
+      .then(response => response.json())
+      .then(fetchData => setHokkPrice(fetchData.data.price));
 
 // empty dependency array means this effect will only run once (like componentDidMount in classes)
 }, []);
@@ -115,28 +100,24 @@ close_price: maximum(of: block, get: quote_price)
 
     
 });
+
+
   
   return (
           
       <>   <Grid conteiner>
             <Grid conteiner>
                 <Grid item>
-                    <TokenLogoWrapper>
-                        <TokenLogo src={hokklogo} />
-                        <UsdcLogo src={usdclogo} />
-                    </TokenLogoWrapper>
-                </Grid>
-                <Grid item>
                     <b>HOKK</b> / USDC    
                 </Grid>
                 <Grid item>
-                    Last price:
+                    <h2>$ {Number(hokkPrice).toFixed(13)}</h2>
                 </Grid>
             </Grid>
             <Grid item> 
                 <ResponsiveContainer width='100%' height={400} >    
                     <AreaChart data={changedData} >
-                        <Area type={cardinal} dataKey="price" />
+                        <Area type={cardinal} dataKey="price" label="price" />
                         <Tooltip />
                     </AreaChart>
                 </ResponsiveContainer>
