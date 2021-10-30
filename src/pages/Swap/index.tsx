@@ -448,6 +448,8 @@ console.log(output)
 const [bnbData, setBnbData] = useState({});
 const [tokenPrice, setTokenPrice] = useState();
 
+console.log(bnbData);
+
 useEffect(() => {
   // GET request using fetch inside useEffect React hook
   fetch('https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT', {cache: "force-cache"})

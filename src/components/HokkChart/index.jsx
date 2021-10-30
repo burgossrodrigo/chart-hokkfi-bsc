@@ -4,11 +4,11 @@ import { gql, useQuery  } from '@apollo/client';
 import { CircularProgress } from '@mui/material';
 import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
 import Grid from '@mui/material/Grid';
-import hokklogo from '../../assets/images/hokklogo.png';
-import usdclogo from '../../assets/images/usdclogo.png';
-import styled from 'styled-components';
+//import hokklogo from '../../assets/images/hokklogo.png';
+//import usdclogo from '../../assets/images/usdclogo.png';
+//import styled from 'styled-components';
 import { curveCardinal } from 'd3-shape';
-import { Typography } from '@mui/material';
+//import { Typography } from '@mui/material';
 
 const HokkChart = () =>{
 
@@ -42,7 +42,6 @@ useEffect(() => {
 ethereum(network: bsc) {
 dexTrades(
 options: {limit: 1000, asc: "timeInterval.minute"}
-date: {since: "2021-10-14"}
 exchangeName: {in:["Pancake","Pancake v2"]}
 baseCurrency: {is: "0x36a92f809da8c2072b090a9e3322226c5376b207"}
 quoteCurrency: {is: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"}
