@@ -1,4 +1,4 @@
-import { CurrencyAmount, JSBI, Token, Trade } from '@hokk/bsc-sdk'
+import { CurrencyAmount, JSBI, Token, Trade } from 'quickswap-sdk'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ArrowDown } from 'react-feather'
 import ReactGA from 'react-ga'
@@ -28,13 +28,6 @@ import ProgressSteps from '../../components/ProgressSteps'
 import SwapHeader from '../../components/swap/SwapHeader'
 import Logo from '../../assets/images/logomain.png'
 import LogoDark from '../../assets/images/logomain.png'
-import HokkChart from '../../components/HokkChart'
-//import Chart from '../../components/Bitquery'
-
-import { gql, useQuery } from '@apollo/client';
-import { CircularProgress } from '@mui/material';
-import { AreaChart, Area, ResponsiveContainer, XAxis } from 'recharts';
-//import { curveCardinal } from 'd3-shape';
 
 // MUI IMPORTS
 
@@ -428,7 +421,7 @@ export default function Swap({ history }: RouteComponentProps) {
   //@ts-ignore
   const output: string = currencies?.OUTPUT ? currencies?.OUTPUT.address : '0x36a92f809da8c2072b090a9e3322226c5376b207'
   //@ts-ignore
-  const symbol: string = currencies?.OUTPUT ? currencies?.OUTPUT.symbol : 'TOKEN'
+  //const symbol: string = currencies?.OUTPUT ? currencies?.OUTPUT.symbol : 'TOKEN'
 
   //const cardinal = curveCardinal.tension(0.01);
   
@@ -446,7 +439,6 @@ console.log(output)
 //BUSD / BNB
 
 const [bnbData, setBnbData] = useState({});
-const [tokenPrice, setTokenPrice] = useState();
 
 console.log(bnbData);
 
@@ -458,101 +450,6 @@ useEffect(() => {
 
 // empty dependency array means this effect will only run once (like componentDidMount in classes)
 }, []);
-
-useEffect(() => {
-
-  // GET request using fetch inside useEffect React hook
-  fetch(`https://api.pancakeswap.info/api/v2/tokens/${output}`, {cache: "force-cache"})
-      .then(response => response.json())
-      .then(fetchData => setTokenPrice(fetchData.data.price));
-
-      console.log(tokenPrice);
-
-// empty dependency array means this effect will only run once (like componentDidMount in classes)
-});
-
-
- const CHART_DATA =  gql`
-  query chart{
-ethereum(network: bsc) {
-dexTrades(
-options: {limit: 1000, asc: "timeInterval.minute"}
-date: {since: "2021-10-29"}
-exchangeName: {in:["Pancake","Pancake v2"]}
-baseCurrency: {is: "${output}"}
-quoteCurrency: {is: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"}
-) {
-timeInterval {
-  minute(count: 5)
-}
-baseCurrency {
-  symbol
-  address
-}
-baseAmount
-quoteCurrency {
-  symbol
-  address
-}
-quoteAmount
-trades: count
-quotePrice
-maximum_price: quotePrice(calculate: maximum)
-minimum_price: quotePrice(calculate: minimum)
-open_price: minimum(of: block, get: quote_price)
-close_price: maximum(of: block, get: quote_price)
-}
-}
-}
-`;
-
-//@ts-ignore
-const { loading, data } =  useQuery(CHART_DATA)
-
-const PrepareChart = () => {
-  
-let changedData: { time: any; value: number }[] = [];
-
-if(loading && Field.OUTPUT !== undefined)
-return < CircularProgress />
-
-
-data.ethereum.dexTrades.map((chart_: { timeInterval: { minute: any }; maximum_price: number }) => {
-  changedData.push({
-    time: chart_.timeInterval.minute,
-    value: chart_.maximum_price*Math.pow(10,12)
-  });
-
-  return changedData;
-})
-
-if(output !== '0x36a92f809da8c2072b090a9e3322226c5376b207'){
-
-
-return (
-
-  <>   
-          <b>{symbol}</b> / USDC    
-          <h2>$ {Number(tokenPrice).toFixed(13)}</h2>
-
-          <ResponsiveContainer width='100%' height={400} >
-      <AreaChart data={changedData}>
-          <Area dataKey="value" />
-          <XAxis dataKey="time" />
-      </AreaChart>
-  </ResponsiveContainer>
-</>
-)
-
-}else{
-
- return (<><HokkChart /></>)
-
-
-}
-
-}
-/* #################################################################### */
 
 
   return (
@@ -572,7 +469,7 @@ return (
       />
       <MainWrapper> 
           <ChartWrapper>
-            <PrepareChart />
+
           </ChartWrapper>
           
         <SwapCardWrapper>

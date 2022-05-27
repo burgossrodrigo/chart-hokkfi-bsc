@@ -1,8 +1,8 @@
-import { Currency, ETHER, Token } from '@hokk/bsc-sdk'
+import { Currency, ETHER, Token } from 'quickswap-sdk'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 
-import EthereumLogo from '../../assets/images/binancelogo.png'
+import EthereumLogo from '../../assets/images/polygon.png'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import Logo from '../Logo'

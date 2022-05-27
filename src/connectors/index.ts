@@ -10,12 +10,12 @@ import { NetworkConnector } from './NetworkConnector'
 import UNISWAP_LOGO_URL from '../assets/svg/logo.svg'
 
 const NETWORK_URL =
-  process.env.NETWORK_URL || 'https://bsc-dataseed.binance.org/'
+  process.env.NETWORK_URL || 'https://polygon-rpc.com'
 // const FORMATIC_KEY = process.env.REACT_APP_FORTMATIC_KEY
 const PORTIS_ID = process.env.REACT_APP_PORTIS_ID
 // const WALLETCONNECT_BRIDGE_URL = process.env.REACT_APP_WALLETCONNECT_BRIDGE_URL
 
-export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '56')
+export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '137')
 
 if (typeof NETWORK_URL === 'undefined') {
   throw new Error(`REACT_APP_NETWORK_URL must be a defined environment variable`)
@@ -33,10 +33,10 @@ export function getNetworkLibrary(): Web3Provider {
 export const bsc = new BscConnector({ supportedChainIds: [56, 97] })
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [56],
+  supportedChainIds: [137],
 })
 
-// mainnet only
+// MATIC only
 export const walletconnect = new WalletConnectConnector({
   rpc: { [NETWORK_CHAIN_ID]: NETWORK_URL },
   bridge: 'https://bridge.walletconnect.org',
@@ -44,7 +44,7 @@ export const walletconnect = new WalletConnectConnector({
   pollingInterval: 15000,
 })
 
-// mainnet only
+// MATIC only
 /*
 export const fortmatic = new FortmaticConnector({
   apiKey: FORMATIC_KEY ?? '',
@@ -52,13 +52,13 @@ export const fortmatic = new FortmaticConnector({
 })
 */
 
-// mainnet only
+// MATIC only
 export const portis = new PortisConnector({
   dAppId: PORTIS_ID ?? '',
   networks: [1],
 })
 
-// mainnet only
+// MATIC only
 export const walletlink = new WalletLinkConnector({
   url: NETWORK_URL,
   appName: 'Hokkfi',

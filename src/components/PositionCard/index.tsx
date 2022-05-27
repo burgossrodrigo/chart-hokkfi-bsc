@@ -1,4 +1,4 @@
-import { JSBI, Pair, Percent, TokenAmount } from '@hokk/bsc-sdk'
+import { JSBI, Pair, Percent, TokenAmount } from 'quickswap-sdk'
 import { darken } from 'polished'
 import React, { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'

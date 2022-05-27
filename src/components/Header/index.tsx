@@ -1,4 +1,4 @@
-// import { ChainId, TokenAmount } from '@hokk/bsc-sdk'
+// import { ChainId, TokenAmount } from 'quickswap-sdk'
 // import { ChainId } from '@mdex/heco-sdk'
 
 import React from 'react'
@@ -48,7 +48,7 @@ const HeaderFrame = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 1rem;
   z-index: 2;
-  background-color: ${({ theme }) => theme.bg1};
+  background-color: transparent;
   ${({ theme }) => theme.mediaWidth.upToMedium`
     grid-template-columns: 1fr;
     padding: 0 1rem;
@@ -301,7 +301,7 @@ const ResponsiveButtonPrimary = styled(ButtonPrimary)`
 
 
 const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
-  [ChainId.MAINNET]: ''
+  [ChainId.MATIC]: ''
 }
 */
 export default function Header() {
@@ -412,7 +412,7 @@ export default function Header() {
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             {account && userEthBalance ? (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                {userEthBalance?.toSignificant(4)} HT
+                {userEthBalance?.toSignificant(4)} MATIC
               </BalanceText>
             ) : null}
             <Web3Status />

@@ -14,7 +14,8 @@ enum SlippageError {
   RiskyHigh = 'RiskyHigh'
 }
 
-enum DeadlineError {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+enum ttlError {
   InvalidInput = 'InvalidInput'
 }
 
@@ -88,21 +89,21 @@ const SlippageEmojiContainer = styled.span`
 export interface SlippageTabsProps {
   rawSlippage: number
   setRawSlippage: (rawSlippage: number) => void
-  deadline: number
-  setDeadline: (deadline: number) => void
+  ttl: number
+  setttl: (ttl: number) => void
 }
 
-export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, setDeadline }: SlippageTabsProps) {
+export default function SlippageTabs({ rawSlippage, setRawSlippage, ttl, setttl }: SlippageTabsProps) {
   const theme = useContext(ThemeContext)
 
   const inputRef = useRef<HTMLInputElement>()
 
   const [slippageInput, setSlippageInput] = useState('')
-  const [deadlineInput, setDeadlineInput] = useState('')
+  const [ttlInput, setttlInput] = useState('')
 
   const slippageInputIsValid =
     slippageInput === '' || (rawSlippage / 100).toFixed(2) === Number.parseFloat(slippageInput).toFixed(2)
-  const deadlineInputIsValid = deadlineInput === '' || (deadline / 60).toString() === deadlineInput
+  const ttlInputIsValid = ttlInput === '' || (ttl / 60).toString() === ttlInput
 
   let slippageError: SlippageError | undefined
   if (slippageInput !== '' && !slippageInputIsValid) {
@@ -115,11 +116,12 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
     slippageError = undefined
   }
 
-  let deadlineError: DeadlineError | undefined
-  if (deadlineInput !== '' && !deadlineInputIsValid) {
-    deadlineError = DeadlineError.InvalidInput
+  let ttlError: ttlError | undefined
+  if (ttlInput !== '' && !ttlInputIsValid) {
+    //@ts-ignore
+    ttlError = ttlError.InvalidInput
   } else {
-    deadlineError = undefined
+    ttlError = undefined
   }
 
   function parseCustomSlippage(value: string) {
@@ -133,13 +135,13 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
     } catch {}
   }
 
-  function parseCustomDeadline(value: string) {
-    setDeadlineInput(value)
+  function parseCustomttl(value: string) {
+    setttlInput(value)
 
     try {
       const valueAsInt: number = Number.parseInt(value) * 60
       if (!Number.isNaN(valueAsInt) && valueAsInt > 0) {
-        setDeadline(valueAsInt)
+        setttl(valueAsInt)
       }
     } catch {}
   }
@@ -226,20 +228,20 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
       <AutoColumn gap="sm">
         <RowFixed>
           <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
-            Transaction deadline
+            Transaction ttl
           </TYPE.black>
           <QuestionHelper text="Your transaction will revert if it is pending for more than this long." />
         </RowFixed>
         <RowFixed>
           <OptionCustom style={{ width: '80px' }} tabIndex={-1}>
             <Input
-              color={!!deadlineError ? 'red' : undefined}
+              color={!!ttlError ? 'red' : undefined}
               onBlur={() => {
-                parseCustomDeadline((deadline / 60).toString())
+                parseCustomttl((ttl / 60).toString())
               }}
-              placeholder={(deadline / 60).toString()}
-              value={deadlineInput}
-              onChange={e => parseCustomDeadline(e.target.value)}
+              placeholder={(ttl / 60).toString()}
+              value={ttlInput}
+              onChange={e => parseCustomttl(e.target.value)}
             />
           </OptionCustom>
           <TYPE.body style={{ paddingLeft: '8px' }} fontSize={14}>

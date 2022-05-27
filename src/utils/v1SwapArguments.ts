@@ -1,5 +1,5 @@
 import { MaxUint256 } from '@ethersproject/constants'
-import { CurrencyAmount, ETHER, SwapParameters, Token, Trade, TradeOptionsDeadline, TradeType } from '@hokk/bsc-sdk'
+import { CurrencyAmount, ETHER, SwapParameters, Token, Trade, TradeOptions, TradeType } from 'quickswap-sdk'
 import { getTradeVersion } from '../data/V1'
 import { Version } from '../hooks/useToggledVersion'
 
@@ -14,7 +14,7 @@ function toHex(currencyAmount: CurrencyAmount): string {
  */
 export default function v1SwapArguments(
   trade: Trade,
-  options: Omit<TradeOptionsDeadline, 'feeOnTransfer'>
+  options: Omit<TradeOptions, 'feeOnTransfer'>
 ): SwapParameters {
   if (getTradeVersion(trade) !== Version.v1) {
     throw new Error('invalid trade version')
@@ -28,18 +28,18 @@ export default function v1SwapArguments(
   if (inputETH && outputETH) throw new Error('ETHER to ETHER')
   const minimumAmountOut = toHex(trade.minimumAmountOut(options.allowedSlippage))
   const maximumAmountIn = toHex(trade.maximumAmountIn(options.allowedSlippage))
-  const deadline = `0x${options.deadline.toString(16)}`
+  const ttl = `0x${options.ttl.toString(16)}`
   if (isExactIn) {
     if (inputETH) {
       return {
         methodName: 'ethToTokenTransferInput',
-        args: [minimumAmountOut, deadline, options.recipient],
+        args: [minimumAmountOut, ttl, options.recipient],
         value: maximumAmountIn
       }
     } else if (outputETH) {
       return {
         methodName: 'tokenToEthTransferInput',
-        args: [maximumAmountIn, minimumAmountOut, deadline, options.recipient],
+        args: [maximumAmountIn, minimumAmountOut, ttl, options.recipient],
         value: '0x0'
       }
     } else {
@@ -50,7 +50,7 @@ export default function v1SwapArguments(
       }
       return {
         methodName: 'tokenToTokenTransferInput',
-        args: [maximumAmountIn, minimumAmountOut, '0x1', deadline, options.recipient, outputToken.address],
+        args: [maximumAmountIn, minimumAmountOut, '0x1', ttl, options.recipient, outputToken.address],
         value: '0x0'
       }
     }
@@ -58,13 +58,13 @@ export default function v1SwapArguments(
     if (inputETH) {
       return {
         methodName: 'ethToTokenTransferOutput',
-        args: [minimumAmountOut, deadline, options.recipient],
+        args: [minimumAmountOut, ttl, options.recipient],
         value: maximumAmountIn
       }
     } else if (outputETH) {
       return {
         methodName: 'tokenToEthTransferOutput',
-        args: [minimumAmountOut, maximumAmountIn, deadline, options.recipient],
+        args: [minimumAmountOut, maximumAmountIn, ttl, options.recipient],
         value: '0x0'
       }
     } else {
@@ -79,7 +79,7 @@ export default function v1SwapArguments(
           minimumAmountOut,
           maximumAmountIn,
           MaxUint256.toHexString(),
-          deadline,
+          ttl,
           options.recipient,
           output.address
         ],

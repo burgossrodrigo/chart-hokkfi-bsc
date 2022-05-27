@@ -1,4 +1,4 @@
-import { ChainId, Token } from '@hokk/bsc-sdk'
+import { ChainId, Token } from 'quickswap-sdk'
 import getPairTokensWithDefaults from '../utils/getPairTokensWithDefaults'
 
 export const PIT_POOLS: {
@@ -7,10 +7,10 @@ export const PIT_POOLS: {
     tokens: [Token, Token]
   }[]
 } = {
-  [ChainId.MAINNET]: [
+  [ChainId.MATIC]: [
     {
       pid: 0,
-      tokens: getPairTokensWithDefaults(ChainId.MAINNET, 'HOKK/WETH'),
+      tokens: getPairTokensWithDefaults(ChainId.MATIC, 'HOKK/WETH'),
     },
   ],
 }

@@ -1,5 +1,5 @@
 import { TransactionResponse } from '@ethersproject/abstract-provider'
-import { JSBI, Token, TokenAmount, WETH, Fraction, Percent, CurrencyAmount } from '@hokk/bsc-sdk'
+import { JSBI, Token, TokenAmount, WETH, Fraction, Percent, CurrencyAmount } from 'quickswap-sdk'
 import React, { useCallback, useMemo, useState } from 'react'
 import ReactGA from 'react-ga'
 import { Redirect, RouteComponentProps } from 'react-router'
@@ -8,7 +8,7 @@ import { LightCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import QuestionHelper from '../../components/QuestionHelper'
 import { AutoRow } from '../../components/Row'
-import { DEFAULT_DEADLINE_FROM_NOW } from '../../constants'
+import { DEFAULT_ttl_FROM_NOW } from '../../constants'
 import { useActiveWeb3React } from '../../hooks'
 import { useToken } from '../../hooks/Tokens'
 import { useV1ExchangeContract } from '../../hooks/useContract'
@@ -69,7 +69,7 @@ function V1PairRemoval({
         liquidityTokenAmount.raw.toString(),
         1, // min_eth, this is safe because we're removing liquidity
         1, // min_tokens, this is safe because we're removing liquidity
-        Math.floor(new Date().getTime() / 1000) + DEFAULT_DEADLINE_FROM_NOW
+        Math.floor(new Date().getTime() / 1000) + DEFAULT_ttl_FROM_NOW
       )
       .then((response: TransactionResponse) => {
         ReactGA.event({

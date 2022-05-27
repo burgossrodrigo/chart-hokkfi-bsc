@@ -15,24 +15,24 @@ export interface StakingRewardsInfo {
 export const STAKING_REWARDS_INFO: {
   [chainId in ChainId] ? : StakingRewardsInfo[]
 } = {
-  [ChainId.MAINNET]: [{
+  [ChainId.MATIC]: [{
       pid: 1,
-      tokens: getPairTokensWithDefaults(ChainId.MAINNET, 'HokkFi/USDC'),
+      tokens: getPairTokensWithDefaults(ChainId.MATIC, 'HokkFi/USDC'),
       active: true
     },
     {
       pid: 1,
-      tokens: getPairTokensWithDefaults(ChainId.MAINNET, 'WONE/VIPER'),
+      tokens: getPairTokensWithDefaults(ChainId.MATIC, 'WONE/VIPER'),
       active: true
     },
     {
       pid: 2,
-      tokens: getPairTokensWithDefaults(ChainId.MAINNET, 'WONE/1ETH'),
+      tokens: getPairTokensWithDefaults(ChainId.MATIC, 'WONE/1ETH'),
       active: true
     },
     {
       pid: 3,
-      tokens: getPairTokensWithDefaults(ChainId.MAINNET, 'BUSD/VIPER'),
+      tokens: getPairTokensWithDefaults(ChainId.MATIC, 'BUSD/VIPER'),
       active: true
     },
   ],

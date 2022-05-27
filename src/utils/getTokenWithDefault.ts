@@ -1,4 +1,4 @@
-import { ChainId, Token, WETH } from '@hokk/bsc-sdk'
+import { ChainId, Token, WETH } from 'quickswap-sdk'
 import { TOKENS } from './extrasdk'
 import { ZERO_ADDRESS } from '../constants/index'
 

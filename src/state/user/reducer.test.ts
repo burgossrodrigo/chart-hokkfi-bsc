@@ -1,5 +1,5 @@
 import { createStore, Store } from 'redux'
-import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
+import { DEFAULT_ttl_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
 import { updateVersion } from '../global/actions'
 import reducer, { initialState, UserState } from './reducer'
 
@@ -19,14 +19,14 @@ describe('swap reducer', () => {
       store.dispatch(updateVersion())
       expect(store.getState().lastUpdateVersionTimestamp).toBeGreaterThanOrEqual(time)
     })
-    it('sets allowed slippage and deadline', () => {
+    it('sets allowed slippage and ttl', () => {
       store = createStore(reducer, {
         ...initialState,
-        userDeadline: undefined,
+        userttl: undefined,
         userSlippageTolerance: undefined
       } as any)
       store.dispatch(updateVersion())
-      expect(store.getState().userDeadline).toEqual(DEFAULT_DEADLINE_FROM_NOW)
+      expect(store.getState().userttl).toEqual(DEFAULT_ttl_FROM_NOW)
       expect(store.getState().userSlippageTolerance).toEqual(INITIAL_ALLOWED_SLIPPAGE)
     })
   })

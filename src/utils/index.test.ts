@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { AddressZero } from '@ethersproject/constants'
-import { TokenAmount, Token, ChainId, Percent, JSBI } from '@hokk/bsc-sdk'
+import { TokenAmount, Token, ChainId, Percent, JSBI } from 'quickswap-sdk'
 
 import {
   getEtherscanLink,
@@ -22,7 +22,7 @@ describe('utils', () => {
     it('correct for address', () => {
       expect(getEtherscanLink(1, 'abc', 'address')).toEqual('https://etherscan.io/address/abc')
     })
-    it('unrecognized chain id defaults to mainnet', () => {
+    it('unrecognized chain id defaults to MATIC', () => {
       expect(getEtherscanLink(2, 'abc', 'address')).toEqual('https://etherscan.io/address/abc')
     })
     it('ropsten', () => {
@@ -35,7 +35,7 @@ describe('utils', () => {
 
   describe('#calculateSlippageAmount', () => {
     it('bounds are correct', () => {
-      const tokenAmount = new TokenAmount(new Token(ChainId.MAINNET, AddressZero, 0), '100')
+      const tokenAmount = new TokenAmount(new Token(ChainId.MATIC, AddressZero, 0), '100')
       expect(() => calculateSlippageAmount(tokenAmount, -1)).toThrow()
       expect(calculateSlippageAmount(tokenAmount, 0).map(bound => bound.toString())).toEqual(['100', '100'])
       expect(calculateSlippageAmount(tokenAmount, 100).map(bound => bound.toString())).toEqual(['99', '101'])

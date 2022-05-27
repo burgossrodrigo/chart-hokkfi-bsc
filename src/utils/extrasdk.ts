@@ -1,4 +1,4 @@
-import { ChainId, Token } from '@hokk/bsc-sdk'
+import { ChainId, Token } from 'quickswap-sdk'
 import DEFAULT_TOKEN_LIST from '../constants/tokenLists/hokkswap.tokenlist.json'
 
 export interface TokenListToken {
@@ -101,6 +101,6 @@ export class Tokens {
 }
 
 export const TOKENS: { [chainId in ChainId]: Tokens } = {
-  [ChainId.MAINNET]: new Tokens(ChainId.MAINNET),
-  [ChainId.TESTNET]: new Tokens(ChainId.TESTNET),
+  [ChainId.MATIC]: new Tokens(ChainId.MATIC),
+  [ChainId.MUMBAI]: new Tokens(ChainId.MUMBAI),
 }

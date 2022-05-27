@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import useIsArgentWallet from '../../hooks/useIsArgentWallet'
-import useTransactionDeadline from '../../hooks/useTransactionDeadline'
+import useTransactionttl from '../../hooks/useTransactionttl'
 import Modal from '../Modal'
 import { AutoColumn } from '../Column'
 import styled from 'styled-components'
@@ -9,7 +9,7 @@ import { TYPE, CloseIcon } from '../../theme'
 import { ButtonConfirmed, ButtonError } from '../Button'
 import ProgressCircles from '../ProgressSteps'
 import CurrencyInputPanel from '../CurrencyInputPanel'
-import { TokenAmount, Pair } from '@hokk/bsc-sdk'
+import { TokenAmount, Pair } from 'quickswap-sdk'
 import { useActiveWeb3React } from '../../hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { usePairContract, useStakingContract } from '../../hooks/useContract'
@@ -74,22 +74,22 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   const pairContract = usePairContract(dummyPair.liquidityToken.address)
 
   // approval data for stake
-  const deadline = useTransactionDeadline()
-  const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
+  const ttl = useTransactionttl()
+  const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; ttl: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(parsedAmount, stakingInfo.stakingRewardAddress)
 
   const isArgentWallet = useIsArgentWallet()
   const stakingContract = useStakingContract(stakingInfo.stakingRewardAddress)
   async function onStake() {
     setAttempting(true)
-    if (stakingContract && parsedAmount && deadline) {
+    if (stakingContract && parsedAmount && ttl) {
       if (approval === ApprovalState.APPROVED) {
         await stakingContract.stake(`0x${parsedAmount.raw.toString(16)}`, { gasLimit: 350000 })
       } else if (signatureData) {
         stakingContract
           .stakeWithPermit(
             `0x${parsedAmount.raw.toString(16)}`,
-            signatureData.deadline,
+            signatureData.ttl,
             signatureData.v,
             signatureData.r,
             signatureData.s,
@@ -126,7 +126,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   }, [maxAmountInput, onUserInput])
 
   async function onAttemptToApprove() {
-    if (!pairContract || !library || !deadline) throw new Error('missing dependencies')
+    if (!pairContract || !library || !ttl) throw new Error('missing dependencies')
     const liquidityAmount = parsedAmount
     if (!liquidityAmount) throw new Error('missing liquidity amount')
 
@@ -154,14 +154,14 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
       { name: 'spender', type: 'address' },
       { name: 'value', type: 'uint256' },
       { name: 'nonce', type: 'uint256' },
-      { name: 'deadline', type: 'uint256' }
+      { name: 'ttl', type: 'uint256' }
     ]
     const message = {
       owner: account,
       spender: stakingInfo.stakingRewardAddress,
       value: liquidityAmount.raw.toString(),
       nonce: nonce.toHexString(),
-      deadline: deadline.toNumber()
+      ttl: ttl.toNumber()
     }
     const data = JSON.stringify({
       types: {
@@ -181,7 +181,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
           v: signature.v,
           r: signature.r,
           s: signature.s,
-          deadline: deadline.toNumber()
+          ttl: ttl.toNumber()
         })
       })
       .catch(error => {

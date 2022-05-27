@@ -1,13 +1,13 @@
-import { ChainId } from '@hokk/bsc-sdk'
+import { ChainId } from 'quickswap-sdk'
 import { FortmaticConnector as FortmaticConnectorCore } from '@web3-react/fortmatic-connector'
 
 export const OVERLAY_READY = 'OVERLAY_READY'
 
-type FormaticSupportedChains = Extract<ChainId, ChainId.MAINNET | ChainId.TESTNET>
+type FormaticSupportedChains = Extract<ChainId, ChainId.MATIC | ChainId.MUMBAI>
 
 const CHAIN_ID_NETWORK_ARGUMENT: { readonly [chainId in FormaticSupportedChains]: string | undefined } = {
-  [ChainId.MAINNET]: undefined,
-  [ChainId.TESTNET]: 'testnet.',
+  [ChainId.MATIC]: undefined,
+  [ChainId.MUMBAI]: 'MUMBAI.',
 }
 
 export class FortmaticConnector extends FortmaticConnectorCore {

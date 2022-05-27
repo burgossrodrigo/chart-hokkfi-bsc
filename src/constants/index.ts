@@ -1,10 +1,10 @@
-import { ChainId, JSBI, Percent, Token, WETH } from '@hokk/bsc-sdk'
+import { ChainId, JSBI, Percent, Token, WETH } from 'quickswap-sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 
 import { bsc, injected, portis, walletconnect, walletlink } from '../connectors'
 
-export const ROUTER_ADDRESS = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
-export const FACTORY_ADDRESS = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
+export const ROUTER_ADDRESS = '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff'
+export const FACTORY_ADDRESS = '0x5757371414417b8C6CAad45bAeF941aBc7d3Ab32'
 export const ZERO_ADDRESS = '0x000000000000000000000000000000000000dead'
 
 export { PRELOADED_PROPOSALS } from './proposals'
@@ -14,19 +14,21 @@ type ChainTokenList = {
   readonly [chainId in ChainId]: Token[]
 }
 
-export const HOKK = new Token(ChainId.MAINNET, '0x36a92f809da8c2072b090a9e3322226c5376b207', 18, 'HOKK', 'Hokkaido Inu')
-export const BUSD = new Token(ChainId.MAINNET, '0xe9e7cea3dedca5984780bafc599bd69add087d56', 18, 'BUSD', 'Binance USD')
-export const ETH = new Token(ChainId.MAINNET, '0x2170ed0880ac9a755fd29b2688956bd959f933f8', 18, 'ETH', 'Ethereum Token')
+
+export const HOKK = new Token(ChainId.MATIC, '0xf28164A485B0B2C90639E47b0f377b4a438a16B1', 18, 'dQUICK', 'Dragon QUICK')
+
+//export const BUSD = new Token(ChainId.MATIC, '0xe9e7cea3dedca5984780bafc599bd69add087d56', 18, 'BUSD', 'Binance USD')
+export const ETH = new Token(ChainId.MATIC, '0x2170ed0880ac9a755fd29b2688956bd959f933f8', 18, 'ETH', 'Ethereum Token')
 export const USDC = new Token(
-  ChainId.MAINNET,
-  '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+  ChainId.MATIC,
+  '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
   18,
   'USDC',
   'Binance-Peg USD Coin'
 )
-export const DAI = new Token(ChainId.MAINNET, '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3', 18, 'DAI', 'DAI USD')
-export const USDT = new Token(ChainId.MAINNET, '0x55d398326f99059ff775485246999027b3197955', 18, 'USDT', 'Wrapped USDT')
-export const WBTC = new Token(ChainId.MAINNET, '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 18, 'WBTC', 'Wrapped Bitcoin')
+export const DAI = new Token(ChainId.MATIC, '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3', 18, 'DAI', 'DAI USD')
+export const USDT = new Token(ChainId.MATIC, '0x55d398326f99059ff775485246999027b3197955', 18, 'USDT', 'Wrapped USDT')
+export const WBTC = new Token(ChainId.MATIC, '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', 18, 'WBTC', 'Wrapped Bitcoin')
 
 // Block time here is slightly higher (~1s) than average in order to avoid ongoing proposals past the displayed time
 export const AVERAGE_BLOCK_TIME_IN_SECS = 13
@@ -35,14 +37,14 @@ export const PROPOSAL_LENGTH_IN_SECS = AVERAGE_BLOCK_TIME_IN_SECS * PROPOSAL_LEN
 
 export const GOVERNANCE_ADDRESS = ZERO_ADDRESS
 
-export const TIMELOCK_ADDRESS = ZERO_ADDRESS
+export const TIMELOCK_ADDRESS: any = ZERO_ADDRESS
 
-// const UNI_ADDRESS = '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984'
-const UNI_ADDRESS = '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
+const UNI_ADDRESS = '0xf28164A485B0B2C90639E47b0f377b4a438a16B1'
+//const UNI_ADDRESS = '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82'
 export const UNI = {
-  [ChainId.MAINNET]: new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'CAKE', 'PancakeSwap Token'),
-  [ChainId.TESTNET]: new Token(
-    ChainId.TESTNET,
+  [ChainId.MATIC]: new Token(ChainId.MATIC, UNI_ADDRESS, 18, 'CAKE', 'PancakeSwap Token'),
+  [ChainId.MUMBAI]: new Token(
+    ChainId.MUMBAI,
     '0xf73d010412fb5835c310728f0ba1b7dfde88379a',
     18,
     'CAKE',
@@ -51,58 +53,59 @@ export const UNI = {
 }
 
 export const MASTER_BREEDER: { [chainId in ChainId]: string } = {
-  [ChainId.MAINNET]: ZERO_ADDRESS,
-  [ChainId.TESTNET]: ZERO_ADDRESS,
+  [ChainId.MATIC]: ZERO_ADDRESS,
+  [ChainId.MUMBAI]: ZERO_ADDRESS,
 }
 
 export const PIT_BREEDER: { [chainId in ChainId]: string } = {
-  [ChainId.MAINNET]: ZERO_ADDRESS,
-  [ChainId.TESTNET]: ZERO_ADDRESS,
+  [ChainId.MATIC]: ZERO_ADDRESS,
+  [ChainId.MUMBAI]: ZERO_ADDRESS,
 }
 
 /*
 export const PIT: { [chainId in ChainId]: Token } = {
-  [ChainId.MAINNET]: ZERO_ADDRESS,
-  [ChainId.TESTNET]: ZERO_ADDRESS
+  [ChainId.MATIC]: ZERO_ADDRESS,
+  [ChainId.MUMBAI]: ZERO_ADDRESS
 
 }
 */
 
 /*
 export const PIT_SETTINGS: { [chainId in ChainId]: Record<string, string> } = {
-  [ChainId.MAINNET]: { name: '', path: '/' },
-  [ChainId.TESTNET]: { name: '', path: '' },
+  [ChainId.MATIC]: { name: '', path: '/' },
+  [ChainId.MUMBAI]: { name: '', path: '' },
 
 }
 */
-
 export const COMMON_CONTRACT_NAMES: { [address: string]: string } = {
   [UNI_ADDRESS]: 'UNI',
   [GOVERNANCE_ADDRESS]: 'Governance',
   [TIMELOCK_ADDRESS]: 'Timelock',
 }
 
-// TODO: specify merkle distributor for mainnet
+// TODO: specify merkle distributor for MATIC
 export const MERKLE_DISTRIBUTOR_ADDRESS: { [chainId in ChainId]?: string } = {
-  [ChainId.MAINNET]: ZERO_ADDRESS,
+  [ChainId.MATIC]: ZERO_ADDRESS,
 }
-
 const WETH_ONLY: ChainTokenList = {
-  [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
-  [ChainId.TESTNET]: [WETH[ChainId.TESTNET]],
+  [ChainId.MATIC]: [WETH[ChainId.MATIC]],
+  [ChainId.MUMBAI]: [WETH[ChainId.MUMBAI]],
 }
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], USDC],
+  [ChainId.MATIC]: [...WETH_ONLY[ChainId.MATIC], USDC],
 }
 
+
 export const ADDITIONAL_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
-  [ChainId.MAINNET]: {
-    '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c': [new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'WBNB', 'Wrapped BNB')],
+  [ChainId.MATIC]: {
+    '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c': [new Token(ChainId.MATIC, UNI_ADDRESS, 18, 'WBNB', 'Wrapped BNB')],
+    /*
     [HOKK.address]: [BUSD],
     [BUSD.address]: [HOKK],
+    */
   },
 }
 
@@ -111,23 +114,24 @@ export const ADDITIONAL_BASES: { [chainId in ChainId]?: { [tokenAddress: string]
  * tokens.
  */
 export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
-  [ChainId.MAINNET]: {},
+  [ChainId.MATIC]: {},
 }
 
 // used for display in the default list when adding liquidity
+
 export const SUGGESTED_BASES: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], BUSD, HOKK],
+  //[ChainId.MATIC]: [...WETH_ONLY[ChainId.MATIC], UNI],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
+
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET]],
+  [ChainId.MATIC]: [...WETH_ONLY[ChainId.MATIC]],
 }
-
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
-  [ChainId.MAINNET]: [[WETH[ChainId.MAINNET], HOKK]],
+  [ChainId.MATIC]: [[WETH[ChainId.MATIC], HOKK]],
 }
 
 export interface WalletInfo {
@@ -211,9 +215,9 @@ export const NetworkContextName = 'NETWORK'
 // default allowed slippage, in bips
 export const INITIAL_ALLOWED_SLIPPAGE = 400
 // 20 minutes, denominated in seconds
-export const DEFAULT_DEADLINE_FROM_NOW = 60 * 20
+export const DEFAULT_ttl_FROM_NOW = 60 * 20
 
-// used for rewards deadlines
+// used for rewards ttls
 export const BIG_INT_SECONDS_IN_WEEK = JSBI.BigInt(60 * 60 * 24 * 7)
 
 export const BIG_INT_ZERO = JSBI.BigInt(0)

@@ -39,7 +39,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "deadline",
+        "name": "ttl",
         "type": "uint256"
       }
     ],

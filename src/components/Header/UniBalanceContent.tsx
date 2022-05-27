@@ -94,7 +94,7 @@ export default function UniBalanceContent({ setShowUniBalanceModal }: { setShowU
               <TYPE.white color="white">Total Supply</TYPE.white>
               <TYPE.white color="white">{totalSupply?.toFixed(0, { groupSeparator: ',' })} B</TYPE.white>
             </RowBetween>
-            {uni && uni.chainId === ChainId.MAINNET ? (
+            {uni && uni.chainId === ChainId.MATIC ? (
               <ExternalLink href={`https://uniswap.info/token/${uni.address}`}>View HOKK Analytics</ExternalLink>
             ) : null}
           </AutoColumn>

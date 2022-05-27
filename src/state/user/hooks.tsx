@@ -1,4 +1,4 @@
-import { ChainId, Pair, Token } from '@hokk/bsc-sdk'
+import { ChainId, Pair, Token } from 'quickswap-sdk'
 import flatMap from 'lodash.flatmap'
 import { useCallback, useMemo } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
@@ -14,7 +14,7 @@ import {
   SerializedPair,
   SerializedToken,
   updateUserDarkMode,
-  updateUserDeadline,
+  updateUserttl,
   updateUserExpertMode,
   updateUserSlippageTolerance,
   toggleURLWarning,
@@ -115,20 +115,20 @@ export function useUserSlippageTolerance(): [number, (slippage: number) => void]
   return [userSlippageTolerance, setUserSlippageTolerance]
 }
 
-export function useUserTransactionTTL(): [number, (slippage: number) => void] {
+export function useUserTransactionttl(): [number, (slippage: number) => void] {
   const dispatch = useDispatch<AppDispatch>()
-  const userDeadline = useSelector<AppState, AppState['user']['userDeadline']>(state => {
-    return state.user.userDeadline
+  const userttl = useSelector<AppState, AppState['user']['userttl']>(state => {
+    return state.user.userttl
   })
 
-  const setUserDeadline = useCallback(
-    (userDeadline: number) => {
-      dispatch(updateUserDeadline({ userDeadline }))
+  const setUserttl = useCallback(
+    (userttl: number) => {
+      dispatch(updateUserttl({ userttl }))
     },
     [dispatch]
   )
 
-  return [userDeadline, setUserDeadline]
+  return [userttl, setUserttl]
 }
 
 export function useAddUserToken(): (token: Token) => void {

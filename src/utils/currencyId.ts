@@ -1,4 +1,4 @@
-import { Currency, ETHER, Token } from '@hokk/bsc-sdk'
+import { Currency, ETHER, Token } from 'quickswap-sdk'
 
 export function currencyId(currency: Currency): string {
   if (currency === ETHER) return 'ETH'

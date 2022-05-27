@@ -2,11 +2,11 @@ import { useState, useLayoutEffect } from 'react'
 import { shade } from 'polished'
 import Vibrant from 'node-vibrant'
 import { hex } from 'wcag-contrast'
-import { Token, ChainId } from '@hokk/bsc-sdk'
+import { Token, ChainId } from 'quickswap-sdk'
 import uriToHttp from 'utils/uriToHttp'
 
 async function getColorFromToken(token: Token): Promise<string | null> {
-  if (token.chainId === ChainId.TESTNET) {
+  if (token.chainId === ChainId.MUMBAI) {
     return Promise.resolve('#FAAB14')
   }
 

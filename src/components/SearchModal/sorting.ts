@@ -1,4 +1,4 @@
-import { Token, TokenAmount } from '@hokk/bsc-sdk'
+import { Token, TokenAmount } from 'quickswap-sdk'
 import { useMemo } from 'react'
 import { useAllTokenBalances } from '../../state/wallet/hooks'
 

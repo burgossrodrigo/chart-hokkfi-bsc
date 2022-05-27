@@ -1,4 +1,4 @@
-import { INITIAL_ALLOWED_SLIPPAGE, DEFAULT_DEADLINE_FROM_NOW } from '../../constants'
+import { INITIAL_ALLOWED_SLIPPAGE, DEFAULT_ttl_FROM_NOW } from '../../constants'
 import { createReducer } from '@reduxjs/toolkit'
 import { updateVersion } from '../global/actions'
 import {
@@ -12,7 +12,7 @@ import {
   updateUserDarkMode,
   updateUserExpertMode,
   updateUserSlippageTolerance,
-  updateUserDeadline,
+  updateUserttl,
   toggleURLWarning,
   updateUserSingleHopOnly
 } from './actions'
@@ -33,8 +33,8 @@ export interface UserState {
   // user defined slippage tolerance in bips, used in all txns
   userSlippageTolerance: number
 
-  // deadline set by user in minutes, used in all txns
-  userDeadline: number
+  // ttl set by user in minutes, used in all txns
+  userttl: number
 
   tokens: {
     [chainId: number]: {
@@ -63,7 +63,7 @@ export const initialState: UserState = {
   userExpertMode: false,
   userSingleHopOnly: false,
   userSlippageTolerance: INITIAL_ALLOWED_SLIPPAGE,
-  userDeadline: DEFAULT_DEADLINE_FROM_NOW,
+  userttl: DEFAULT_ttl_FROM_NOW,
   tokens: {},
   pairs: {},
   timestamp: currentTimestamp(),
@@ -79,10 +79,10 @@ export default createReducer(initialState, builder =>
         state.userSlippageTolerance = INITIAL_ALLOWED_SLIPPAGE
       }
 
-      // deadline isnt being tracked in local storage, reset to default
+      // ttl isnt being tracked in local storage, reset to default
       // noinspection SuspiciousTypeOfGuard
-      if (typeof state.userDeadline !== 'number') {
-        state.userDeadline = DEFAULT_DEADLINE_FROM_NOW
+      if (typeof state.userttl !== 'number') {
+        state.userttl = DEFAULT_ttl_FROM_NOW
       }
 
       state.lastUpdateVersionTimestamp = currentTimestamp()
@@ -103,8 +103,8 @@ export default createReducer(initialState, builder =>
       state.userSlippageTolerance = action.payload.userSlippageTolerance
       state.timestamp = currentTimestamp()
     })
-    .addCase(updateUserDeadline, (state, action) => {
-      state.userDeadline = action.payload.userDeadline
+    .addCase(updateUserttl, (state, action) => {
+      state.userttl = action.payload.userttl
       state.timestamp = currentTimestamp()
     })
     .addCase(updateUserSingleHopOnly, (state, action) => {

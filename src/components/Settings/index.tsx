@@ -8,7 +8,7 @@ import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useToggleSettingsMenu } from '../../state/application/hooks'
 import {
   useExpertModeManager,
-  useUserTransactionTTL,
+  useUserTransactionttl,
   useUserSlippageTolerance,
   useUserSingleHopOnly
 } from '../../state/user/hooks'
@@ -128,7 +128,7 @@ export default function SettingsTab() {
   const theme = useContext(ThemeContext)
   const [userSlippageTolerance, setUserslippageTolerance] = useUserSlippageTolerance()
 
-  const [ttl, setTtl] = useUserTransactionTTL()
+  const [ttl, setttl] = useUserTransactionttl()
 
   const [expertMode, toggleExpertMode] = useExpertModeManager()
 
@@ -198,8 +198,8 @@ export default function SettingsTab() {
             <TransactionSettings
               rawSlippage={userSlippageTolerance}
               setRawSlippage={setUserslippageTolerance}
-              deadline={ttl}
-              setDeadline={setTtl}
+              ttl={ttl}
+              setttl={setttl}
             />
             <Text fontWeight={600} fontSize={14}>
               Interface Settings
