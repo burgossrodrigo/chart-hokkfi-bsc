@@ -1,4 +1,4 @@
-# Hokkx Interface
+# SWAPEE
 
 [![Unit Tests](https://github.com/Uniswap/uniswap-interface/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/Uniswap/uniswap-interface/actions/workflows/unit-tests.yaml)
 [![Integration Tests](https://github.com/Uniswap/uniswap-interface/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/Uniswap/uniswap-interface/actions/workflows/integration-tests.yaml)
@@ -7,7 +7,7 @@
 
 An open source interface for Hokkx -- a protocol for decentralized exchange of Ethereum tokens.
 
-- Website: [hokk.finance](https://hokk.finance/)
+- Website: [](https://hokk.finance/)
 - Interface: [app.uniswap.org](https://app.uniswap.org)
 <!-- - Docs: [uniswap.org/docs/](https://uniswap.org/docs/) -->
 
